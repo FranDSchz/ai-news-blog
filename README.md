@@ -128,7 +128,11 @@ Sigue estos pasos para tener el proyecto corriendo en tu computadora:
 
 4.  **Aplicar Migraciones:**
     Esto crea la base de datos (`db.sqlite3`) y las tablas según nuestros modelos.
-
+    Primero nos aseguramos de estar parados en la carpeta del proyecto `ai_news_config`, si estamos en `ai-news-blog/` entonces:
+    ```bash
+    cd ai_news_config
+    ```
+    Ahora si podemos aplicar las migraciones.
     ```bash
     python manage.py makemigrations
     ```
@@ -136,14 +140,14 @@ Sigue estos pasos para tener el proyecto corriendo en tu computadora:
     python manage.py migrate
     ```
 
-5.  **Crear un Superusuario:**
+6.  **Crear un Superusuario:**
     Necesitarás un usuario para acceder al panel de administrador (`/admin`).
 
     ```bash
     python manage.py createsuperuser
     ```
 
-6.  **Levantar el Servidor:**
+7.  **Levantar el Servidor:**
     ¡Listo\! Con esto, el proyecto estará corriendo.
 
     ```bash
