@@ -10,6 +10,8 @@ https://docs.djangoproject.com/en/5.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
+
+
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -22,6 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-2tbh@ze4bgssyvw-n_wo(mcio9xz&npwno9kwrin%4&ga)2#0b'
 
+AUTH_USER_MODEL = 'usuarios.Usuario'
 
 
 # Application definition
