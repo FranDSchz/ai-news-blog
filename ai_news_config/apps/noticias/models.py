@@ -12,14 +12,13 @@ class Categoria(models.Model):
 
 class Post(models.Model):
     ESTADO_CHOICE = [
-        ('pubiclado', 'Publicado'),
+        ('publicado', 'Publicado'),
         ('borrador', 'Borrador'),
     ]
-    
     autor = models.ForeignKey( settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     titulo = models.CharField(max_length=225)
     contenido = models.TextField()
-    categoria = models.CharField(max_length=50)
+    categoria = models.ForeignKey(Categoria, on_delete=models.PROTECT)
     imagen= models.ImageField(
     upload_to='imagenes_noticias', blank=True, null=True)
     fecha_creacion = models.DateTimeField(auto_now_add=True)
