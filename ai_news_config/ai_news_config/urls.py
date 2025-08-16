@@ -19,8 +19,7 @@ from django.urls import path, include
 from apps.noticias.views import home
 
 urlpatterns = [
-
-    path('',inicio, name='inicio'),
+    path('', home, name='home'),
     path('admin/', admin.site.urls),
     path('noticias/',include('apps.noticias.urls')),
     path('usuarios/', include('apps.usuarios.urls'))
