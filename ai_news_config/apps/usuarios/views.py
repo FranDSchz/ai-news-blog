@@ -1,10 +1,12 @@
 from django.shortcuts import render
 from django.shortcuts import redirect
-from django.urls import reverse_lazy
-from django.views.generic import CreateView
+from django.urls import reverse_lazy, reverse
+from django.views.generic import CreateView, View
 from django.contrib import messages
 from .forms import RegistroUsuarioForm
 from .models import Perfil
+from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.decorators import login_required
 
 class RegistroUsuario(CreateView):
     template_name = 'usuarios/register.html'
@@ -12,13 +14,26 @@ class RegistroUsuario(CreateView):
     success_url = reverse_lazy('home')
 
     def form_valid(self, form):
-
-        self.object = form.save()
-        
+        self.object = form.save()  
         Perfil.objects.create(usuario=self.object)
-    
         messages.success(self.request, '¡Registro exitoso! Por favor, inicia sesión.')
-        
         return redirect(self.get_success_url())
+    
+class LoginUsuario(LoginView):
+    template_name = 'usuarios/login.html'
+    success_url = reverse_lazy('perfil') 
+
+    def get_success_url(self):
+        messages.success(self.request, f'¡Bienvenido de nuevo, {self.request.user.username}!')
+        return super().get_success_url()
+    
+class LogoutUsuario(View):
+    def get(self, request, *args, **kwargs):
+        logout(request)
+        messages.success(request, '¡Has cerrado sesión exitosamente!')
+        return redirect('login')
 
 
+@login_required
+def perfil(request):
+    return render(request, 'usuarios/perfil.html')
