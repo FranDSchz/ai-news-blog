@@ -18,7 +18,8 @@ from django.contrib import admin
 from django.urls import path, include
 from .views import inicio
 urlpatterns = [
-    path('',inicio),
+    path('',inicio, name='inicio'),
     path('admin/', admin.site.urls),
     path('noticias/',include('apps.noticias.urls')),
+    path('usuarios/', include('apps.usuarios.urls'))
 ]
