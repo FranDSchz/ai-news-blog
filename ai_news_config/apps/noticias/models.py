@@ -15,11 +15,9 @@ class Post(models.Model):
         ('publicado', 'Publicado'),
         ('borrador', 'Borrador'),
     ]
-    
     autor = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     titulo = models.CharField(max_length=225)
     contenido = models.TextField()
-
     categoria = models.ManyToManyField(Categoria, related_name='posts')
     imagen = models.ImageField(upload_to='imagenes_noticias', blank=True, null=True)
     fecha_creacion = models.DateTimeField(auto_now_add=True)
