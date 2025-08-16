@@ -11,12 +11,12 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="trending-tittle">
-                            <strong>Trending now</strong>
+                            <strong>Tendencias Ahora</strong>
                             <!-- <p>Rem ipsum dolor sit amet, consectetur adipisicing elit.</p> -->
                             <div class="trending-animated">
                                 <ul id="js-news" class="js-hidden">
                                     {% for post in posts %}
-                                    <li class="news-item">{{post.titulo}}</li>
+                                    <li class="news-item">{{post.titulo}}</li> <!-- DEUDA TECNICA: Filtrar posts x cant de vists en un rango, ultimo dia, hora, etc. Limitar cant -->
                                     {% endfor %}
                                 </ul>
                             </div>
