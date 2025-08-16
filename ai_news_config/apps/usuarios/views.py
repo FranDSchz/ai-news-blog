@@ -9,7 +9,7 @@ from .models import Perfil
 class RegistroUsuario(CreateView):
     template_name = 'usuarios/register.html'
     form_class = RegistroUsuarioForm
-    success_url = reverse_lazy('inicio')
+    success_url = reverse_lazy('home')
 
     def form_valid(self, form):
 
