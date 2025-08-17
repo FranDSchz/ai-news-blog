@@ -48,9 +48,16 @@ def home(request):
 #LOS DECORADORES PROTEGEN LAS VISTAS PARA QUE SOLO PUEDAN USARLAS LOS COLABORADORES
 
 def post_detail(request,pk):
-    post = get_object_or_404(Post,pk=pk)
+    post = get_object_or_404(Post,pk=pk, estado = 'publicado')
+    
+    posts_recientes = Post.objects.filter(estado='publicado').exclude(pk=pk).order_by('-fecha_publicacion')[:5] #DEFINIR BIEN EL CRITERIO PARA MOSTRAR ESTOS POST.
+    
     categorias = post.categoria.all()
-    comentarios = post.comentarios.all() 
+    comentarios = post.comentarios.all()
+    count_coment = comentarios.count()
+    
+    foto_perfil = post.autor.perfil.imagen_perfil.url
+    
     if request.method == 'POST':
         if not request.user.is_authenticated:
             messages.error(request, 'Debes iniciar sesión para poder comentar.')
@@ -74,11 +81,13 @@ def post_detail(request,pk):
 
     context = {
         'post': post,
+        'posts_recientes': posts_recientes,
         'categorias': categorias,
-        'comentarios': comentarios,       # <- Añadido
-        'comentario_form': comentario_form # <- Añadido
-    }
-                
+        'comentarios': comentarios,       
+        'comentario_form': comentario_form,
+        'count_coment':count_coment,
+        'foto': foto_perfil
+    }            
     
     return render(request,'noticias/post_detail.html',context)
 
