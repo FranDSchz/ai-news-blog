@@ -1,8 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib import messages
-from .models import Post, Categoria, Video
-from .forms import PostForm 
+from .models import Post, Categoria, Video, Comentario
+from .forms import PostForm, ComentarioForm
 
 #DEUDA TECNICA: Implementar manejo de errores, que pasa si hay menos de 10 noticias publicadas?
 def home(request):
@@ -50,8 +50,36 @@ def home(request):
 def post_detail(request,pk):
     post = get_object_or_404(Post,pk=pk)
     categorias = post.categoria.all()
-    context = {'post':post, 'categorias':categorias}
-    print(post)
+    comentarios = post.comentarios.all() 
+    if request.method == 'POST':
+        if not request.user.is_authenticated:
+            messages.error(request, 'Debes iniciar sesión para poder comentar.')
+            return redirect('apps.usuarios:login')
+        comentario_form = ComentarioForm(request.POST)
+        if comentario_form.is_valid():
+            # Creamos el objeto Comentario pero no lo guardamos aún en la base de datos.
+            nuevo_comentario = comentario_form.save(commit=False)
+            # Le asignamos manualmente el post actual.
+            nuevo_comentario.post = post
+            # Le asignamos manualmente el usuario que está logueado.
+            nuevo_comentario.usuario = request.user
+            # Ahora sí, guardamos el comentario completo en la base de datos.
+            nuevo_comentario.save()
+            messages.success(request, '¡Tu comentario ha sido añadido!')
+            # Redirigimos al usuario a la misma página para que vea su nuevo comentario y
+            # evitar que se reenvíe el formulario si recarga la página.
+            return redirect('noticias:post_detail', pk=post.pk)
+    else:
+        comentario_form = ComentarioForm()
+
+    context = {
+        'post': post,
+        'categorias': categorias,
+        'comentarios': comentarios,       # <- Añadido
+        'comentario_form': comentario_form # <- Añadido
+    }
+                
+    
     return render(request,'noticias/post_detail.html',context)
 
 @login_required

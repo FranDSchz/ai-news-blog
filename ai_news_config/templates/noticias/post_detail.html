@@ -24,6 +24,51 @@
         </header>
         <main>
             <h1>{{categorias}}</h1>
+            <div class="comments-area">
+            <h4>{{ comentarios.count }} Comentarios</h4>
+    
+            {% for comentario in comentarios %}
+                <div class="comment-list">
+                    <div class="single-comment justify-content-between d-flex">
+                        <div class="user justify-content-between d-flex">
+                            <div class="desc">
+                                <p class="comment">{{ comentario.texto }}</p>
+                                <div class="d-flex justify-content-between">
+                                    <div class="d-flex align-items-center">
+                                        <h5><a href="#">{{ comentario.usuario.username }}</a></h5>
+                                        <p class="date">{{ comentario.fecha_creacion|date:"d M, Y H:i" }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <p>Aún no hay comentarios. ¡Sé el primero en comentar!</p>
+                {% endfor %}
+            </div>
+
+            <div class="comment-form mt-5">
+                <h4>Deja un comentario</h4>
+                {% if user.is_authenticated %}
+                    <form class="form-contact comment_form" method="post" id="commentForm">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    {{ comentario_form.texto }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="button button-contactForm btn_1 boxed-btn">Enviar Comentario</button>
+                        </div>
+                    </form>
+                {% else %}
+                    <p>Debes <a href="{% url 'apps.usuarios:login' %}?next={{ request.path }}">iniciar sesión</a> para poder comentar.</p>
+                {% endif %}
+            </div>
+
         </main>
         <footer>
             <!-- place footer here -->
