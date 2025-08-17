@@ -27,7 +27,7 @@ def home(request):
     weekly2_news_posts= posts_recientes[14:19]
     recent_articles_posts = posts_recientes[19:23]
     context = {
-        'trending_title_posts': trending_title_posts ,
+        'trending_title_posts': trending_title_posts,
         'trending_top_post': trending_top_post,
         'trending_bottom_posts': trending_bottom_posts,
         'right_content_posts': right_content_posts,
@@ -49,6 +49,7 @@ def post_detail(request,pk):
     context = {'post':post, 'categorias':categorias}
     print(post)
     return render(request,'noticias/post_detail.html',context)
+
 @login_required
 @permission_required('noticias.add_post', raise_exception=True)
 def post_crear(request):

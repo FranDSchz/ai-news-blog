@@ -3,6 +3,7 @@
 {% block title %}Inicio - AI News Blog{% endblock %}
 
 {% block content %}
+<!-- DEUDA TECNICA: Agregar interaccion a las imagenes de los Post-->
     <!-- Trending Area Start -->
     <div class="trending-area fix">
         <div class="container">
@@ -14,7 +15,6 @@
                             <strong>Tendencias Ahora</strong>
                             <!-- <p>Rem ipsum dolor sit amet, consectetur adipisicing elit.</p> -->
                             <div class="trending-animated">
-                                
                                 <ul id="js-news" class="js-hidden">
                                     {% for post in trending_title_posts %}
                                     <li class="news-item">{{post.titulo}}</li> <!-- DEUDA TECNICA: Filtrar posts x cant de vists en un rango, ultimo dia, hora, etc. Limitar cant -->
@@ -28,17 +28,15 @@
                 <div class="row">
                     <div class="col-lg-8">
                         <!-- Trending Top -->
-                        {% if trending_top_post %}
                         <div class="trending-top mb-30">
                             <div class="trend-top-img">
                                 <img src="{{ trending_top_post.imagen.url }}" alt="{{ trending_top_post.titulo }}">
                                 <div class="trend-top-cap"> <!--DEUDA TECNICA: Por esta clase, no coinciden el color de las categorias-->
                                     <span>{{trending_top_post.categoria.first.nombre}}</span> <!-- DEUDA TECNICA: Y si tiene mas de una categoria?, criterio de seleccion por fecha_publicacion pobre, add criterio selec editor, visitas, likes, etc-->
-                                    <h2><a href="{% url 'post_detail' trending_top_post.id %}">{{trending_top_post.titulo}}<br> {{trending_top_post.contenido|slice:"0:40"}}...</a></h2> <!-- POST-MVP: agregar subtitulo para mostrar ambos con un <br> en medio -->
+                                    <h2><a href="{% url 'noticias:post_detail' trending_top_post.id %}">{{trending_top_post.titulo}}<br> {{trending_top_post.contenido|slice:"0:40"}}...</a></h2> <!-- POST-MVP: agregar subtitulo para mostrar ambos con un <br> en medio -->
                                 </div>
                             </div>
                         </div>
-                        {% endif %}
                         <!-- Trending Bottom -->
                         <div class="trending-bottom">
                             <div class="row">
@@ -46,15 +44,15 @@
                                 <div class="col-lg-4">
                                 <div class="single-bottom mb-35">
                                     <div class="trend-bottom-img mb-30">
-                                        <img src="{{ post.imagen.url }}" alt="{{ post.titulo }}">
+                                        <img src="{{post.imagen.url}}" alt="{{post.titulo}}">
                                     </div>
                                     <div class="trend-bottom-cap">
                                         <span class="color{{post.categoria.first.id}}">{{post.categoria.first.nombre}}</span> <!-- DEUDA TECNICA: = q en la linea 35 -->
-                                        <h4><a href="{% url 'post_detail' post.id %}">{{ post.titulo }}</a></h4>
+                                        <h4><a href="{% url 'noticias:post_detail' post.id %}">{{ post.titulo }}</a></h4>
                                     </div>
                                 </div>
                                 </div>
-                                {% endfor %}  
+                                {% endfor %}
                             </div>
                         </div>
                     </div>
@@ -67,7 +65,7 @@
                             </div>
                             <div class="trand-right-cap">
                                 <span class="color{{post.categoria.first.id}}">{{post.categoria.first.nombre}}</span>
-                                <h4><a href="{% url 'post_detail' post.id %}">{{ post.titulo }}</a></h4>
+                                <h4><a href="{% url 'noticias:post_detail' post.id %}">{{ post.titulo }}</a></h4>
                             </div>
                         </div>
                         {% endfor %}
@@ -99,7 +97,7 @@
                                 </div>
                                 <div class="weekly-caption">
                                     <span class="color{{post.categoria.first.id}}">{{post.categoria.first.nombre}}</span>
-                                    <h4><a href="{% url 'post_detail' post.id %}">{{post.titulo}}</a></h4>
+                                    <h4><a href="{% url 'noticias:post_detail' post.id %}">{{post.titulo}}</a></h4>
                                 </div>
                             </div>
                             {% endfor %}
@@ -152,7 +150,7 @@
                                                 </div>
                                                 <div class="what-cap">
                                                     <span class="color{{post.categoria.first.id}}">{{post.categoria.first.nombre}}</span> <!--DEUDA TECNICA: cambiar css para que no dependa del tam de la img (set 360x335)-->
-                                                    <h4><a href="{% url 'post_detail' post.id %}">{{post.titulo}}</a></h4>
+                                                    <h4><a href="{% url 'noticias:post_detail' post.id %}">{{post.titulo}}</a></h4>
                                                     <p>{{ post.autor.username }}  |  {{ post.fecha_publicacion|date:"d M. Y" }}</p> 
                                                 </div>
                                             </div>
@@ -174,7 +172,7 @@
                                                 </div>
                                                 <div class="what-cap">
                                                     <span class="color{{item.cat.id}}">{{item.cat.nombre}}</span>
-                                                    <h4><a href="{% url 'post_detail' post.id %}">{{post.titulo}}</a></h4>
+                                                    <h4><a href="{% url 'noticias:post_detail' post.id %}">{{post.titulo}}</a></h4>
                                                     <p>{{ post.autor.username }}  |  {{ post.fecha_publicacion|date:"d M. Y" }}</p> 
                                                 </div>
                                             </div>
@@ -261,7 +259,7 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="weekly2-news-active dot-style d-flex dot-style">
-                            {% for post in weekly2_news_posts%}
+                            {% for post in weekly2_news_posts %}
                             <div class="weekly2-single">
                                 <div class="weekly2-img">
                                     <img src="{{ post.imagen.url }}" alt="{{post.titulo}}">
@@ -269,11 +267,10 @@
                                 <div class="weekly2-caption">
                                     <span class="color{{post.categoria.first.id}}">{{post.categoria.first.nombre}}</span>
                                     <p>{{ post.fecha_publicacion|date:"d M. Y" }}</p>
-                                    <h4><a href="{% url 'post_detail' post.id %}">{{post.titulo}}</a></h4>
+                                    <h4><a href="{% url 'noticias:post_detail' post.id %}">{{post.titulo}}</a></h4>
                                 </div>
                             </div>
                             {% endfor %}
-
                         </div>
                     </div>
                 </div>
@@ -367,58 +364,24 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="section-tittle mb-30">
-                            <h3>Recent Articles</h3>
+                            <h3>Articulos Recientes</h3> <!-- DEUDA TECNICA: Mismo q las sec ant, def criterio-->
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-12">
                         <div class="recent-active dot-style d-flex dot-style">
+                            {% for post in recent_articles_posts %}
                             <div class="single-recent mb-100">
                                 <div class="what-img">
-                                    <img src="{% static 'assets/img/news/recent1.jpg' %}" alt="">
+                                    <img src="{{post.imagen.url}}" alt="{{post.titulo}}">
                                 </div>
                                 <div class="what-cap">
-                                    <span class="color1">Night party</span>
-                                    <h4><a href="#">Welcome To The Best Model  Winner Contest</a></h4>
+                                    <span class="color{{post.categoria.first.id}}">{{post.categoria.first.nombre}}</span> <!-- DEUDA TECNICA: limitar el tamaño-->
+                                    <h4><a href="{% url 'noticias:post_detail' post.id %}">{{post.titulo}}</a></h4> 
                                 </div>
                             </div>
-                            <div class="single-recent mb-100">
-                                <div class="what-img">
-                                    <img src="{% static 'assets/img/news/recent1.jpg' %}" alt="">
-                                </div>
-                                <div class="what-cap">
-                                    <span class="color1">Night party</span>
-                                    <h4><a href="#">Welcome To The Best Model  Winner Contest</a></h4>
-                                </div>
-                            </div>
-                            <div class="single-recent mb-100">
-                                <div class="what-img">
-                                    <img src="{% static 'assets/img/news/recent2.jpg' %}" alt="">
-                                </div>
-                                <div class="what-cap">
-                                    <span class="color1">Night party</span>
-                                    <h4><a href="#">Welcome To The Best Model  Winner Contest</a></h4>
-                                </div>
-                            </div>
-                            <div class="single-recent mb-100">
-                                <div class="what-img">
-                                    <img src="{% static 'assets/img/news/recent3.jpg' %}" alt="">
-                                </div>
-                                <div class="what-cap">
-                                    <span class="color1">Night party</span>
-                                    <h4><a href="#">Welcome To The Best Model  Winner Contest</a></h4>
-                                </div>
-                            </div>
-                            <div class="single-recent mb-100">
-                                <div class="what-img">
-                                    <img src="{% static 'assets/img/news/recent2.jpg' %}" alt="">
-                                </div>
-                                <div class="what-cap">
-                                    <span class="color1">Night party</span>
-                                    <h4><a href="#">Welcome To The Best Model  Winner Contest</a></h4>
-                                </div>
-                            </div>
+                            {% endfor %}
                         </div>
                     </div>
                 </div>
