@@ -1,14 +1,16 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib import messages
-from .models import Post, Categoria
+from .models import Post, Categoria, Video
 from .forms import PostForm 
 
 #DEUDA TECNICA: Implementar manejo de errores, que pasa si hay menos de 10 noticias publicadas?
 def home(request):
+    #CONSULTAS a la BD
     posts_recientes = Post.objects.filter(estado='publicado').order_by('-fecha_publicacion')[:25]
-    
     categorias_whats_new = Categoria.objects.all()
+    videos = Video.objects.order_by('-fecha_creacion')[:5]
+    
     categorias_con_posts = []
     for cat in categorias_whats_new:
         aux = Post.objects.filter(categoria=cat).order_by('-fecha_publicacion')[:4]
@@ -17,8 +19,9 @@ def home(request):
             'posts': aux
         })
         
-    posts_whats_new = posts_recientes[:4]
+    
     #CUANDO QUIERA APLICAR OTRO CRITERIO VOY A TENER QUE CAMBIAR COMO DEFINO ESTAS VARIABLES
+    posts_whats_new = posts_recientes[:4]
     trending_title_posts = posts_recientes[:5]
     trending_top_post = posts_recientes[0] if len(posts_recientes) > 0 else None
     trending_bottom_posts =  posts_recientes[1:4]
@@ -36,7 +39,8 @@ def home(request):
         'posts_whats_new': posts_whats_new,
         'weekly2_news_posts': weekly2_news_posts,
         'recent_articles_posts': recent_articles_posts,
-        'data': categorias_con_posts
+        'data': categorias_con_posts,
+        'videos': videos
     }
     
     return render(request, 'noticias/home.html', context)

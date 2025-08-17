@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Post, Comentario, Categoria
+from .models import Post, Comentario, Categoria, Video
 from django.utils import timezone
 
 # Register your models here.
@@ -50,6 +50,12 @@ class ComentarioAdmin(admin.ModelAdmin):
         return obj.texto[:40] + "...." if len(obj.texto) > 40 else obj.texto
     texto_corto.short_description = "Comentario"
 
+class VideoAdmin(admin.ModelAdmin):
+    list_display = ('titulo', 'categoria', 'fecha_creacion')
+    list_filter = ('categoria',)
+    search_fields = ('titulo', 'descripcion')
+    
 admin.site.register(Comentario, ComentarioAdmin)
 admin.site.register(Post, PostAdmin)
 admin.site.register(Categoria, CategoriaAdmin)
+admin.site.register(Video, VideoAdmin)
