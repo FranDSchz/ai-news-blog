@@ -55,7 +55,7 @@ def post_crear(request):
             return redirect('home')
     else:
         form = PostForm()
-    return render(request, 'noticias/post_form.html', {'form': form, 'titulo': 'Crear Nuevo Post'})
+    return render(request, 'noticias/post_forms.html', {'form': form, 'titulo': 'Crear Nuevo Post'})
 
 
 @login_required
