@@ -189,12 +189,25 @@
           }
         }
       ]
-
-
-
-
     });
+    $('.video-items-active').on('afterChange', function(event, slick, currentSlide){
+  // 1. Seleccionamos el slide actual de forma segura usando el índice 'currentSlide'
+  var currentVideo = $(slick.$slides.get(currentSlide));
 
+  // 2. Obtenemos los datos del slide seleccionado
+  var videoTitle = currentVideo.data('titulo');
+  var videoDescription = currentVideo.data('descripcion');
+  var videoCategory = currentVideo.data('categoria');
+  var videoCategoryId = currentVideo.data('categoria-id');
+
+  // 3. Buscamos el contenedor de la descripción
+  var videoCaption = $('.video-caption');
+
+  // 4. Actualizamos el contenido del HTML con los nuevos datos
+  videoCaption.find('.top-caption span').text(videoCategory).removeClass().addClass('color' + videoCategoryId);
+  videoCaption.find('.bottom-caption h2').text(videoTitle);
+  videoCaption.find('.bottom-caption p').text(videoDescription);
+});
 
 /* 5. Gallery Active */
     var client_list = $('.completed-active');

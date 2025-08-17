@@ -24,8 +24,7 @@ urlpatterns = [
     path('', home, name='home'),
     path('admin/', admin.site.urls),
     path('noticias/',include('apps.noticias.urls')),
-    path('usuarios/', include('apps.usuarios.urls', 'usuarios'))
-
+    path('usuarios/', include('apps.usuarios.urls', 'usuarios')),
 ]
 
 if settings.DEBUG:  # Solo en desarrollo
