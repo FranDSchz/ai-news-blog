@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.shortcuts import redirect
+from django.contrib.auth.models import Group
 from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, View
 from django.contrib import messages
@@ -37,3 +38,19 @@ def logout_usuario(request):
     logout(request)
     messages.success(request, '¡Has cerrado sesión exitosamente!')
     return redirect('apps.usuarios:login')
+
+def register(request):
+    if request.method == 'POST':
+        form = RegistroUsuarioForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            try:
+                grupo_miembro = Group.objects.get(name='Miembro')
+                user.groups.add(grupo_miembro)
+            except Group.DoesNotExist:
+                pass
+            messages.success(request, '¡Registro exitoso! Por favor, inicia sesión.')
+            return redirect('login')
+    else:
+        form = RegistroUsuarioForm()
+    return render(request, 'usuarios/register.html', {'form': form})

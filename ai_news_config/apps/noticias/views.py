@@ -1,5 +1,8 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib import messages
 from .models import Post
+from .forms import PostForm 
 
 #DEUDA TECNICA: Implementar manejo de errores, que pasa si hay menos de 10 noticias publicadas?
 def home(request):
@@ -31,9 +34,51 @@ def home(request):
     
     return render(request, 'noticias/home.html', context)
 
+#LOS DECORADORES PROTEGEN LAS VISTAS PARA QUE SOLO PUEDAN USARLAS LOS COLABORADORES
+
 def post_detail(request,pk):
     post = get_object_or_404(Post,pk=pk)
     categorias = post.categoria.all()
     context = {'post':post, 'categorias':categorias}
     print(post)
     return render(request,'noticias/post_detail.html',context)
+@login_required
+@permission_required('noticias.add_post', raise_exception=True)
+def post_crear(request):
+    if request.method == 'POST':
+        form = PostForm(request.POST, request.FILES)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.autor = request.user
+            post.save()
+            messages.success(request, '¡El post ha sido creado exitosamente!')
+            return redirect('home')
+    else:
+        form = PostForm()
+    return render(request, 'noticias/post_form.html', {'form': form, 'titulo': 'Crear Nuevo Post'})
+
+
+@login_required
+@permission_required('noticias.change_post', raise_exception=True)
+def post_editar(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    if request.method == 'POST':
+        form = PostForm(request.POST, request.FILES, instance=post)
+        if form.is_valid():
+            form.save()
+            messages.success(request, '¡El post ha sido actualizado!')
+            return redirect('post_detail', pk=post.pk)
+    else:
+        form = PostForm(instance=post)
+    return render(request, 'noticias/post_form.html', {'form': form, 'titulo': 'Editar Post'})
+
+
+@login_required
+@permission_required('noticias.delete_post', raise_exception=True)
+def post_eliminar(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    if request.method == 'POST':
+        post.delete()
+        messages.success(request, 'El post ha sido eliminado.')
+        return redirect('home')
+    return render(request, 'noticias/post_confirmar_eliminar.html', {'post': post})
