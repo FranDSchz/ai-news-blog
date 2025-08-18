@@ -18,7 +18,7 @@ El tablero está organizado en un flujo Kanban simple. Todas las tareas nacen en
 4.  **Mueve la tarjeta a la columna `Doing`**. Nadie más debería trabajar en esa tarea.
 5.  Una vez que hayas terminado y probado tu código, **mueve la tarjeta a `Done`**.
 
------
+---------------------------------
 
 ## **💻 Flujo de Trabajo con Git y GitHub**
 
