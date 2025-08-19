@@ -5,7 +5,7 @@
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
         <title>{% block title %}AI News Blog{% endblock %}</title>
-        <meta name="description" content="">
+        <meta name="description" content="{% block description %}Blog de noticias y análisis sobre Inteligencia Artificial. Mantente actualizado con las últimas tendencias, herramientas y debates en el mundo de la IA.{% endblock %}">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="shortcut icon" type="image/x-icon" href="{% static 'assets/img/favicon.ico' %}">
 
@@ -22,17 +22,20 @@
             <link rel="stylesheet" href="{% static 'assets/css/slick.css' %}">
             <link rel="stylesheet" href="{% static 'assets/css/nice-select.css' %}">
             <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+            <!-- DEUDA TENICA usar una herramienta de Django (como django-compressor) 
+             para unirlos y minificarlos en un solo archivo. Esto mejora drásticamente el tiempo de carga -->
+             {% block extra_css %}{% endblock %}
    </head>
 
    <body>
        
-    <!-- Preloader Start -->
+    <!-- Preloader Start DEUDA TECNICA: El preloader tarda mucho-->
     <!-- <div id="preloader-active">
         <div class="preloader d-flex align-items-center justify-content-center">
             <div class="preloader-inner position-relative">
                 <div class="preloader-circle"></div>
                 <div class="preloader-img pere-text">
-                    <img src="{% static 'assets/img/logo/logo.png" alt="">
+                    <img src="{% static 'assets/img/logo/logo.jpg' %}" alt="">
                 </div>
             </div>
         </div>
@@ -43,7 +46,7 @@
         <!-- Header Start -->
        <div class="header-area">
             <div class="main-header ">
-                <div class="header-top black-bg d-none d-md-block">
+                <!--<div class="header-top black-bg d-none d-md-block">
                    <div class="container">
                        <div class="col-xl-12">
                             <div class="row d-flex justify-content-between align-items-center">
@@ -57,13 +60,13 @@
                                     <ul class="header-social">    
                                         <li><a href="#"><i class="fab fa-twitter"></i></a></li>
                                         <li><a href="#"><i class="fab fa-instagram"></i></a></li>
-                                       <li> <a href="#"><i class="fab fa-pinterest-p"></i></a></li>
+                                     <li> <a href="#"><i class="fab fa-pinterest-p"></i></a></li>
                                     </ul>
                                 </div>
                             </div>
                        </div>
                    </div>
-                </div>
+                </div> -->
                 <div class="header-mid d-none d-md-block">
                    <div class="container">
                         <div class="row d-flex align-items-center">
@@ -73,11 +76,11 @@
                                     <a href="{% url 'home' %}"><img src="{% static 'assets/img/logo/logo.jpg' %}" alt="" height="150" width="150" ></a>
                                 </div>
                             </div>
-                            <div class="col-xl-9 col-lg-9 col-md-9">
-                                <!-- <div class="header-banner f-right ">
+                            <!--<div class="col-xl-9 col-lg-9 col-md-9">
+                                 <div class="header-banner f-right ">
                                     <img src="{% static 'assets/img/hero/header_card.jpg' %}" alt="" height="300">
-                                </div> -->
-                            </div>
+                                </div> 
+                            </div> DEUDA TECNICA: Ver que hacer con el banner--> 
                         </div>
                    </div>
                 </div>
@@ -91,18 +94,34 @@
                                     </div>
                                 <!-- Main-menu -->
                                 <div class="main-menu d-none d-md-block">
-                                    <nav>                  
-                                        <ul id="navigation">    
+                                    <nav>
+                                        <ul id="navigation">
                                             <li><a href="{% url 'home' %}">Home</a></li>
-                                            <li><a href="{% url 'noticias:categorias' %}">Categorias</a>
+                                            <li><a href="{% url 'noticias:categorias' %}">Categorías</a>
                                                 <ul class="submenu">
-                                                    {%for cat in categorias%}
-                                                    <li><a href="{% url 'noticias:categorias_filtro' cat.id%}">{{cat.nombre}}</a></li>
+                                                    {% for cat in categorias %}
+                                                    <li><a href="{% url 'noticias:categorias_filtro' cat.id %}">{{ cat.nombre }}</a></li>
                                                     {% endfor %}
                                                 </ul>
                                             </li>
                                             <li><a href="{% url 'nosotros' %}">Sobre Nosotros</a></li>
                                             <li><a href="{% url 'contacto' %}">Contacto</a></li>
+                                            {% if user.is_authenticated %}
+                                            <li><a href="#">Mi Perfil</a> 
+                                                <ul class="submenu">
+                                                    <li><a href="{% url 'apps.usuarios:perfil' user.perfil.id %}">Ver Mi Perfil</a></li>
+                                                    {% if user.rol == 'autor' or user.is_superuser %}
+                                                    <li><a href="{% url 'noticias:post_crear' %}">Crear Artículo</a></li>
+                                                    {% endif %}
+                                                    <li><a href="{% url 'apps.usuarios:logout' %}">Cerrar Sesión</a></li>
+                                                </ul>
+                                            </li>
+                                            <li><a>¡Hola, {{ user.username }}!</a></li>
+
+                                            {% else %}
+                                            <li><a href="{% url 'apps.usuarios:login' %}">Iniciar Sesión</a></li>
+                                            <li><a href="{% url 'apps.usuarios:registrar' %}">Registrarse</a></li>
+                                            {% endif %}
                                         </ul>
                                     </nav>
                                 </div>
@@ -131,6 +150,18 @@
     </header>
 
     <main>
+        {% if messages %}
+        <div class="container">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+        </div>
+        {% endif %}
         {% block content %}
         {% endblock %}
     </main>
@@ -273,6 +304,6 @@
 		<!-- Jquery Plugins, main Jquery -->	
         <script src="{% static 'assets/js/plugins.js' %}"></script>
         <script src="{% static 'assets/js/main.js' %}"></script>
-        
+        {% block extra_js %}{% endblock %}
     </body>
 </html>

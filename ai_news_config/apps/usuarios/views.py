@@ -38,7 +38,7 @@ def logout_usuario(request):
  
     logout(request)
     messages.success(request, '¡Has cerrado sesión exitosamente!')
-    return redirect('apps.usuarios:login')
+    return redirect('home')
 
 def register(request):
     if request.method == 'POST':

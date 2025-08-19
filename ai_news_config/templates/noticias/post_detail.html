@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block title %}{{ post.titulo }}{% endblock %}
-
+{% block description %} {{post.contenido|truncatechars:150}} {% endblock %}
 {% block content %}
 <section class="blog_area single-post-area section-padding">
       <div class="container">
