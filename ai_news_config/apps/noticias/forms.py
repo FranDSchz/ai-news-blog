@@ -20,5 +20,13 @@ class ComentarioForm(forms.ModelForm):
         # Usamos 'texto' para que coincida con tu modelo
         fields = ['texto']
         widgets = {
-            'texto': forms.Textarea(attrs={'class': 'form-control', 'rows': 4, 'placeholder': 'Escribe tu comentario aquí...'}),
+            'texto': forms.Textarea(attrs={
+                'class': 'form-control',
+                'placeholder': 'Escribe tu comentario aquí...',
+                'rows': 5, # Puedes ajustar el número de filas
+                'id': 'comment' # Usamos el id que probablemente espera el CSS de la plantilla
+            }),
+        }
+        labels = {
+            'texto': '', # Dejamos la etiqueta vacía para que no aparezca "Texto:"
         }

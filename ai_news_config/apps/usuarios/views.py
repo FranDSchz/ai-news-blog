@@ -1,5 +1,4 @@
-from django.shortcuts import render
-from django.shortcuts import redirect
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.models import Group
 from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, View
@@ -30,8 +29,10 @@ class LoginUsuario(LoginView):
     
 
 @login_required
-def perfil(request):
-    return render(request, 'usuarios/perfil.html')
+def perfil(request,pk):
+    perfil = get_object_or_404(Perfil,pk=pk)
+    context = {'perfil':perfil}
+    return render(request, 'usuarios/perfil.html',context)
 
 def logout_usuario(request):
  

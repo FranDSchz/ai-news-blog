@@ -33,7 +33,7 @@
                                 <img src="{{ trending_top_post.imagen.url }}" alt="{{ trending_top_post.titulo }}">
                                 <div class="trend-top-cap"> <!--DEUDA TECNICA: Por esta clase, no coinciden el color de las categorias-->
                                     <span>{{trending_top_post.categoria.first.nombre}}</span> <!-- DEUDA TECNICA: Y si tiene mas de una categoria?, criterio de seleccion por fecha_publicacion pobre, add criterio selec editor, visitas, likes, etc-->
-                                    <h2><a href="{% url 'noticias:post_detail' trending_top_post.id %}">{{trending_top_post.titulo}}<br> {{trending_top_post.contenido|slice:"0:40"}}...</a></h2> <!-- POST-MVP: agregar subtitulo para mostrar ambos con un <br> en medio -->
+                                    <h2><a href="{% url 'noticias:post_detail' trending_top_post.id %}">{{trending_top_post.titulo}}<br> {{trending_top_post.contenido|truncatechars:150|safe}}</a></h2> <!-- POST-MVP: agregar subtitulo para mostrar ambos con un <br> en medio -->
                                 </div>
                             </div>
                         </div>

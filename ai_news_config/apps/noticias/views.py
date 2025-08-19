@@ -52,11 +52,25 @@ def post_detail(request,pk):
     
     posts_recientes = Post.objects.filter(estado='publicado').exclude(pk=pk).order_by('-fecha_publicacion')[:5] #DEFINIR BIEN EL CRITERIO PARA MOSTRAR ESTOS POST.
     
-    categorias = post.categoria.all()
-    comentarios = post.comentarios.all()
+    categorias_post = post.categoria.all()
+    comentarios = Comentario.objects.filter(post=post).select_related('usuario__perfil')
     count_coment = comentarios.count()
     
-    foto_perfil = post.autor.perfil.imagen_perfil.url
+    prev_post = Post.objects.filter(
+        estado='publicado',
+        categoria__in=categorias_post, 
+        fecha_publicacion__lt=post.fecha_publicacion
+    ).exclude(pk=post.pk).distinct().order_by('-fecha_publicacion', '-id').first()
+    
+    next_post = Post.objects.filter(
+        estado='publicado',
+        categoria__in=categorias_post,
+        fecha_publicacion__gt=post.fecha_publicacion
+    ).exclude(pk=post.pk).distinct().order_by('fecha_publicacion', 'id').first()
+    
+    perfil_autor = post.autor.perfil
+    
+    categorias = Categoria.objects.all()
     
     if request.method == 'POST':
         if not request.user.is_authenticated:
@@ -72,24 +86,37 @@ def post_detail(request,pk):
             nuevo_comentario.usuario = request.user
             # Ahora sí, guardamos el comentario completo en la base de datos.
             nuevo_comentario.save()
-            messages.success(request, '¡Tu comentario ha sido añadido!')
+            messages.success(request, '¡Tu comentario se ha publicado con éxito!')
             # Redirigimos al usuario a la misma página para que vea su nuevo comentario y
             # evitar que se reenvíe el formulario si recarga la página.
             return redirect('noticias:post_detail', pk=post.pk)
     else:
         comentario_form = ComentarioForm()
-
+        
     context = {
         'post': post,
         'posts_recientes': posts_recientes,
-        'categorias': categorias,
+        'categorias_post': categorias_post,
+        'categorias':categorias,
         'comentarios': comentarios,       
         'comentario_form': comentario_form,
         'count_coment':count_coment,
-        'foto': foto_perfil
+        'perfil_autor': perfil_autor,
+        'next_post':next_post,
+        'prev_post':prev_post
     }            
     
     return render(request,'noticias/post_detail.html',context)
+
+def categorias(request):
+    cat = Categoria.objects.all()
+    context ={'categorias':cat}
+    return render(request,'noticias/categorias.html',context)
+
+def categorias_filtro(request,pk):
+    cat = Categoria.objects.get(pk=pk)
+    context ={'categorias':cat}
+    return render(request,'noticias/categorias.html',context)
 
 @login_required
 @permission_required('noticias.add_post', raise_exception=True)
@@ -116,10 +143,10 @@ def post_editar(request, pk):
         if form.is_valid():
             form.save()
             messages.success(request, '¡El post ha sido actualizado!')
-            return redirect('post_detail', pk=post.pk)
+            return redirect('noticias:post_detail', pk=post.pk)
     else:
         form = PostForm(instance=post)
-    return render(request, 'noticias/post_form.html', {'form': form, 'titulo': 'Editar Post'})
+    return render(request, 'noticias/post_forms.html', {'form': form, 'titulo': 'Editar Post'})
 
 
 @login_required

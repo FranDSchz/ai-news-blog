@@ -13,7 +13,7 @@ class Usuario(AbstractUser):
         return self.username
     
 class Perfil(models.Model):
-    usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE)
+    usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE, related_name="perfil")
     biografia = models.TextField(blank=True, null=True)
     imagen_perfil = models.ImageField(upload_to='imagenes_perfiles/', null=True, blank=True)
 

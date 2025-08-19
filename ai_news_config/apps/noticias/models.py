@@ -34,7 +34,7 @@ class Post(models.Model):
         self.save()
 
 class Comentario(models.Model):
-    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="comentarios")
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comentarios')
     texto = models.TextField()
     fecha_creacion = models.DateTimeField(auto_now_add=True)
