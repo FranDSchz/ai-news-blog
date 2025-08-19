@@ -8,11 +8,11 @@ from .forms import PostForm, ComentarioForm
 def home(request):
     #CONSULTAS a la BD
     posts_recientes = Post.objects.filter(estado='publicado').order_by('-fecha_publicacion')[:25]
-    categorias_whats_new = Categoria.objects.all()
+    categorias = Categoria.objects.all()
     videos = Video.objects.order_by('-fecha_creacion')[:5]
     
     categorias_con_posts = []
-    for cat in categorias_whats_new:
+    for cat in categorias:
         aux = Post.objects.filter(categoria=cat).order_by('-fecha_publicacion')[:4]
         categorias_con_posts.append({
             'cat': cat,
@@ -35,7 +35,7 @@ def home(request):
         'trending_bottom_posts': trending_bottom_posts,
         'right_content_posts': right_content_posts,
         'weekly_news_posts': weekly_news_posts,
-        'categorias_whats_new': categorias_whats_new,
+        'categorias': categorias,
         'posts_whats_new': posts_whats_new,
         'weekly2_news_posts': weekly2_news_posts,
         'recent_articles_posts': recent_articles_posts,

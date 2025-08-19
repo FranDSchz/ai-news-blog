@@ -19,12 +19,15 @@ from django.urls import path, include
 from apps.noticias.views import home
 from django.conf import settings
 from django.conf.urls.static import static
+from .views import nosotros, contacto
 
 urlpatterns = [
     path('', home, name='home'),
     path('admin/', admin.site.urls),
     path('noticias/',include('apps.noticias.urls')),
     path('usuarios/', include('apps.usuarios.urls', 'usuarios')),
+    path('nosotros/', nosotros,name= 'nosotros'),
+    path('contacto/', contacto,name= 'contacto'),
 ]
 
 if settings.DEBUG:  # Solo en desarrollo

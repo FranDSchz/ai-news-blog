@@ -49,8 +49,8 @@
                             <div class="row d-flex justify-content-between align-items-center">
                                 <div class="header-info-left">
                                     <ul>     
-                                        <!-- <li><img src="{% static 'assets/img/icon/header_icon1.png' %}" alt="">34ºc, Sunny </li>
-                                        <li><img src="{% static 'assets/img/icon/header_icon1.png' %}" alt="">Tuesday, 18th June, 2019</li> -->
+                                        <li><img src="{% static 'assets/img/icon/header_icon1.png' %}" alt="">34ºc, Sunny </li>
+                                        <li><img src="{% static 'assets/img/icon/header_icon1.png' %}" alt="">Tuesday, 18th June, 2019</li>
                                     </ul>
                                 </div>
                                 <div class="header-info-right">
@@ -93,19 +93,16 @@
                                 <div class="main-menu d-none d-md-block">
                                     <nav>                  
                                         <ul id="navigation">    
-                                            <li><a href="{% url 'home' %}">Inicio</a></li>
-                                            <li><a href="categori.html">Categoría</a></li>
-                                            <li><a href="about.html">Acerca de</a></li>
-                                            <li><a href="latest_news.html">Últimas Noticias</a></li>
-                                            <li><a href="contact.html">Contacto</a></li>
-                                            <li><a href="#">Páginas</a>
+                                            <li><a href="{% url 'home' %}">Home</a></li>
+                                            <li><a href="{% url 'noticias:categorias' %}">Categorias</a>
                                                 <ul class="submenu">
-                                                    <li><a href="elements.html">Element</a></li>
-                                                    <li><a href="blog.html">Blog</a></li>
-                                                    <li><a href="single-blog.html">Blog Details</a></li>
-                                                    <li><a href="details.html">Categori Details</a></li>
+                                                    {%for cat in categorias%}
+                                                    <li><a href="{% url 'noticias:categorias_filtro' cat.id%}">{{cat.nombre}}</a></li>
+                                                    {% endfor %}
                                                 </ul>
                                             </li>
+                                            <li><a href="{% url 'nosotros' %}">Sobre Nosotros</a></li>
+                                            <li><a href="{% url 'contacto' %}">Contacto</a></li>
                                         </ul>
                                     </nav>
                                 </div>
