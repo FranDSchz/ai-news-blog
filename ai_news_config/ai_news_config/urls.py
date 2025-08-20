@@ -28,6 +28,7 @@ urlpatterns = [
     path('usuarios/', include('apps.usuarios.urls', 'usuarios')),
     path('nosotros/', nosotros,name= 'nosotros'),
     path('contacto/', contacto,name= 'contacto'),
+    path('accounts/', include('django.contrib.auth.urls')),
 ]
 
 if settings.DEBUG:  # Solo en desarrollo

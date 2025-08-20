@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib import messages
-from .models import Post, Categoria, Video, Comentario
+from .models import Post, Categoria, Video, Comentario, Notificacion
 from .forms import PostForm, ComentarioForm
 from django.db.models import Count, Q
 from .forms import PostFilterForm
@@ -109,6 +109,25 @@ def post_detail(request,pk):
     }            
     
     return render(request,'noticias/post_detail.html',context)
+
+def posts_por_categoria(request, categoria_id):
+    categoria = get_object_or_404(Categoria, id=categoria_id)
+    posts = Post.objects.filter(categoria=categoria)
+    contexto = {
+        'categoria': categoria,
+        'posts': posts
+    }
+    return render(request, 'noticias/posts_por_categoria.html', contexto)
+
+def buscar_posts(request):
+    query = request.GET.get('q')
+    posts = []
+    if query:
+        posts = Post.objects.filter(
+            Q(titulo__icontains=query) | 
+            Q(contenido__icontains=query)
+        ).distinct()
+    return render(request, 'noticias/resultados_busqueda.html', {'posts': posts, 'query': query})
 
 def posts_por_categoria(request, categoria_id=None):
     # 1. Definimos el queryset base
@@ -226,3 +245,11 @@ def post_eliminar(request, pk):
         messages.success(request, 'El post ha sido eliminado.')
         return redirect('home')
     return render(request, 'noticias/post_confirmar_eliminar.html', {'post': post})
+
+@login_required
+def lista_notificaciones(request):
+    notificaciones = Notificacion.objects.filter(usuario_destino=request.user).order_by('-fecha_creacion')
+    
+    Notificacion.objects.filter(usuario_destino=request.user, leida=False).update(leida=True)
+    
+    return render(request, 'noticias/notificaciones.html', {'notificaciones': notificaciones})

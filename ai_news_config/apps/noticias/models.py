@@ -3,6 +3,8 @@ from django.db import models
 from django.conf import settings
 from django.utils import timezone
 from django.db.models import Count
+from django.contrib.auth.models import User
+
 
 class Categoria(models.Model):
     nombre = models.CharField(max_length=100, unique=True)
@@ -55,6 +57,12 @@ class Video(models.Model):
 
     def __str__(self):
         return self.titulo
+    
+class Notificacion(models.Model):
+    usuario_destino = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    mensaje = models.CharField(max_length=255)
+    leida = models.BooleanField(default=False)
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
 
     @property
     def embed_url(self):
