@@ -4,7 +4,7 @@ from django.contrib import messages
 from .models import Post, Categoria, Video, Comentario
 from .forms import PostForm, ComentarioForm
 from django.db.models import Count, Q
-
+from .forms import PostFilterForm
 
 #DEUDA TECNICA: Implementar manejo de errores, que pasa si hay menos de 10 noticias publicadas?
 def home(request):
@@ -110,16 +110,36 @@ def post_detail(request,pk):
     
     return render(request,'noticias/post_detail.html',context)
 
-def posts_por_categoria(request,pk):
-    categoria = get_object_or_404(Categoria, pk=pk)
-    posts = Post.objects.filter(categoria=categoria, estado='publicado').order_by('-fecha_publicacion')
-    categorias = Categoria.objects.all() #DEUDA TECNICA: Buscar la forma de que base tenga las categorias sin depender del contexto de las pag
-    context ={
-        'categoria':categoria,
-        'posts':posts,
-        'categorias':categorias
-              }
-    return render(request,'noticias/categoria_posts.html',context)
+def posts_por_categoria(request, categoria_id=None):
+    # 1. Definimos el queryset base
+    posts = Post.objects.filter(estado='publicado')
+    categoria = None
+    categorias_base = Categoria.objects.all()
+    # 2. Si se proporciona un categoria_id, filtramos por esa categoría
+    if categoria_id:
+        categoria = get_object_or_404(Categoria, id=categoria_id)
+        posts = posts.filter(categoria=categoria)
+
+    # 3. Lógica de ordenamiento (sin cambios)
+    orden = request.GET.get('ordenar', 'fecha_desc')
+    if orden == 'fecha_asc':
+        posts = posts.order_by('fecha_publicacion')
+    elif orden == 'titulo_asc':
+        posts = posts.order_by('titulo')
+    elif orden == 'titulo_desc':
+        posts = posts.order_by('-titulo')
+    else:
+        posts = posts.order_by('-fecha_publicacion')
+
+    context = {
+        'categoria': categoria,
+        'posts': posts,
+        'orden_actual': orden,
+        'categorias':categorias_base
+    }
+    return render(request, 'noticias/categoria_posts.html', context)
+
+
 
 def lista_categorias(request):
     # La condición se aplica DENTRO del Count usando el parámetro "filter"
@@ -133,9 +153,38 @@ def lista_categorias(request):
     return render(request, 'noticias/lista_categorias.html', context)
 
 def explorar_noticias(request):
+    # Empezamos con el QuerySet base que incluye todos los posts publicados
+    queryset = Post.objects.filter(estado='publicado')
+    
+    # Creamos una instancia de nuestro formulario, pasándole los datos que vienen por GET
+    # request.GET contendrá un diccionario como {'categoria': '1', 'ordenar': 'titulo_asc'}
+    form = PostFilterForm(request.GET)
     categorias = Categoria.objects.all()
-    context ={'contexto':categorias}
-    return render(request,'noticias/explorar_noticias.html',context)
+    # Django validará que los datos recibidos son coherentes con el formulario
+    if form.is_valid():
+        cleaned_data = form.cleaned_data
+
+        # Filtro por categoría (si se seleccionó una)
+        if cleaned_data['categoria']:
+            queryset = queryset.filter(categoria=cleaned_data['categoria'])
+
+        # Ordenamiento
+        orden = cleaned_data.get('ordenar') or 'fecha_desc' # Usamos el valor del form o el default
+        if orden == 'fecha_asc':
+            queryset = queryset.order_by('fecha_publicacion')
+        elif orden == 'titulo_asc':
+            queryset = queryset.order_by('titulo')
+        elif orden == 'titulo_desc':
+            queryset = queryset.order_by('-titulo')
+        else: # 'fecha_desc'
+            queryset = queryset.order_by('-fecha_publicacion')
+
+    context = {
+        'posts': queryset,
+        'filter_form': form, # Pasamos el formulario a la plantilla
+        'categorias':categorias
+    }
+    return render(request, 'noticias/explorar_noticias.html', context)
 
 @login_required
 @permission_required('noticias.add_post', raise_exception=True)

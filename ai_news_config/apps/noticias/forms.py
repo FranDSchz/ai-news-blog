@@ -30,3 +30,30 @@ class ComentarioForm(forms.ModelForm):
         labels = {
             'texto': '', # Dejamos la etiqueta vacía para que no aparezca "Texto:"
         }
+        
+class PostFilterForm(forms.Form):
+    # Opciones para el campo de ordenamiento
+    ORDEN_CHOICES = [
+        ('fecha_desc', 'Más Recientes'),
+        ('fecha_asc', 'Más Antiguos'),
+        ('titulo_asc', 'Título (A-Z)'),
+        ('titulo_desc', 'Título (Z-A)'),
+    ]
+
+    # Campo para seleccionar una categoría.
+    # Es un ModelChoiceField porque sus opciones vienen del modelo Categoria.
+    # 'required=False' permite al usuario no seleccionar ninguna y ver todas.
+    categoria = forms.ModelChoiceField(
+        queryset=Categoria.objects.all(),
+        required=False,
+        empty_label="Todas las Categorías", # Texto para la opción por defecto
+        widget=forms.Select(attrs={'class': 'form-control'})
+    )
+
+    # Campo para seleccionar el criterio de ordenamiento.
+    ordenar = forms.ChoiceField(
+        choices=ORDEN_CHOICES,
+        required=False,
+        initial='fecha_desc', # Valor por defecto
+        widget=forms.Select(attrs={'class': 'form-control'})
+    )

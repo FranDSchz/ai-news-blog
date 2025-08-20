@@ -8,7 +8,14 @@
         <div class="row">
             <div class="col-lg-8">
                 <h2 class="mb-5">Artículos de la categoría: <strong>{{ categoria.nombre }}</strong></h2>
-
+                <div class="mb-4">
+                    <span>Ordenar por:</span><!--DEUDA TECNICA: Mejorar el visual de los filtros en la seccion categorias-->
+                    <a href="?ordenar=fecha_desc" class="btn btn-sm {% if orden_actual == 'fecha_desc' %}btn-primary{% else %}btn-outline-secondary{% endif %}">Más Recientes</a>
+                    <a href="?ordenar=fecha_asc" class="btn btn-sm {% if orden_actual == 'fecha_asc' %}btn-outline-secondary{% else %}btn-secondary{% endif %}">Más Antiguos</a>
+                    <a href="?ordenar=titulo_asc" class="btn btn-sm {% if orden_actual == 'titulo_asc' %}btn-secondary{% else %}btn-outline-secondary{% endif %}">Título (A-Z)</a>
+                    <a href="?ordenar=titulo_desc" class="btn btn-sm {% if orden_actual == 'titulo_desc' %}btn-secondary{% else %}btn-outline-secondary{% endif %}">Título (Z-A)</a>
+                </div>
+                <hr>
                 {% for post in posts %} <!--Deuda Tecnica: mejorar los estilos-->
                     <article class="blog_item">
                         <div class="blog_item_img">
