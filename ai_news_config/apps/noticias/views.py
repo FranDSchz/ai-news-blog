@@ -3,6 +3,8 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib import messages
 from .models import Post, Categoria, Video, Comentario
 from .forms import PostForm, ComentarioForm
+from django.db.models import Count, Q
+
 
 #DEUDA TECNICA: Implementar manejo de errores, que pasa si hay menos de 10 noticias publicadas?
 def home(request):
@@ -108,15 +110,32 @@ def post_detail(request,pk):
     
     return render(request,'noticias/post_detail.html',context)
 
-def categorias(request):
-    cat = Categoria.objects.all()
-    context ={'categorias':cat}
-    return render(request,'noticias/categorias.html',context)
+def posts_por_categoria(request,pk):
+    categoria = get_object_or_404(Categoria, pk=pk)
+    posts = Post.objects.filter(categoria=categoria, estado='publicado').order_by('-fecha_publicacion')
+    categorias = Categoria.objects.all() #DEUDA TECNICA: Buscar la forma de que base tenga las categorias sin depender del contexto de las pag
+    context ={
+        'categoria':categoria,
+        'posts':posts,
+        'categorias':categorias
+              }
+    return render(request,'noticias/categoria_posts.html',context)
 
-def categorias_filtro(request,pk):
-    cat = Categoria.objects.get(pk=pk)
-    context ={'categorias':cat}
-    return render(request,'noticias/categorias.html',context)
+def lista_categorias(request):
+    # La condición se aplica DENTRO del Count usando el parámetro "filter"
+    categorias = Categoria.objects.annotate(
+        num_posts=Count('posts', filter=Q(posts__estado='publicado'))
+    )
+
+    context = {
+        'categorias': categorias
+    }
+    return render(request, 'noticias/lista_categorias.html', context)
+
+def explorar_noticias(request):
+    categorias = Categoria.objects.all()
+    context ={'contexto':categorias}
+    return render(request,'noticias/explorar_noticias.html',context)
 
 @login_required
 @permission_required('noticias.add_post', raise_exception=True)

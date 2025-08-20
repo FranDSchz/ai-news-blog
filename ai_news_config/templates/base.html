@@ -22,6 +22,7 @@
             <link rel="stylesheet" href="{% static 'assets/css/slick.css' %}">
             <link rel="stylesheet" href="{% static 'assets/css/nice-select.css' %}">
             <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+            <link rel="stylesheet" href="{% static 'assets/css/customstyles.css' %}">
             <!-- DEUDA TENICA usar una herramienta de Django (como django-compressor) 
              para unirlos y minificarlos en un solo archivo. Esto mejora drásticamente el tiempo de carga -->
              {% block extra_css %}{% endblock %}
@@ -97,10 +98,10 @@
                                     <nav>
                                         <ul id="navigation">
                                             <li><a href="{% url 'home' %}">Home</a></li>
-                                            <li><a href="{% url 'noticias:categorias' %}">Categorías</a>
+                                            <li><a href="{% url 'noticias:lista_categorias' %}">Categorías</a>
                                                 <ul class="submenu">
                                                     {% for cat in categorias %}
-                                                    <li><a href="{% url 'noticias:categorias_filtro' cat.id %}">{{ cat.nombre }}</a></li>
+                                                    <li><a href="{% url 'noticias:posts_por_categoria' cat.id %}">{{ cat.nombre }}</a></li>
                                                     {% endfor %}
                                                 </ul>
                                             </li>

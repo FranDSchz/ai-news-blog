@@ -2,14 +2,17 @@
 from django.db import models
 from django.conf import settings
 from django.utils import timezone
+from django.db.models import Count
 
 class Categoria(models.Model):
     nombre = models.CharField(max_length=100, unique=True)
-    descripcion = models.TextField(blank=True, null=True)
+    descripcion = models.TextField(blank=True, null=True, help_text="Una breve descripción de la categoría para SEO y para mostrar en el hub de categorías.")
+    imagen = models.ImageField(upload_to='imagenes_categorias/', null=True, blank=True, help_text="Imagen representativa para la categoría")
 
     def __str__(self):
         return self.nombre
-
+    
+    
 class Post(models.Model):
     ESTADO_CHOICES = [
         ('publicado', 'Publicado'),

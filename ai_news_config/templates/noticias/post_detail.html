@@ -181,7 +181,7 @@
                      <ul class="list cat-list">
                         {% for cat in categorias %}
                         <li>
-                           <a href="{% url 'noticias:categorias_filtro' cat.id%}" class="d-flex">
+                           <a href="{% url 'noticias:posts_por_categoria' cat.id%}" class="d-flex">
                               <p>{{cat.nombre}}</p>
                               <p>({{ cat.posts.count }})</p>
                            </a>
