@@ -85,3 +85,174 @@
         width: calc(33.333% - 20px); /* Tres columnas en escritorio */
     }
 }
+/* --- Estilos para la página "Acerca de Nosotros" --- */
+
+.about-us-area {
+    background-color: #f8f9fa; /* Un fondo suave para la sección */
+}
+
+/* Intro */
+.about-intro h1 {
+    font-weight: 700;
+    color: #333;
+}
+
+.about-intro .lead {
+    font-size: 1.25rem;
+    color: #555;
+}
+
+/* Misión */
+.about-mission-img img {
+    border: 10px solid #fff;
+}
+
+.about-mission-text h2 {
+    font-weight: 600;
+    color: #333;
+}
+
+.about-mission-text p, .about-mission-text li {
+    font-size: 1.1rem;
+    color: #666;
+}
+
+.about-mission-text .fa-check-circle {
+    font-size: 1.5rem;
+}
+
+/* Equipo */
+.section-title {
+    font-weight: 700;
+    color: #333;
+}
+
+.team-card {
+    background: #fff;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    text-align: center;
+    transition: all 0.3s ease;
+    height: 100%;
+}
+
+.team-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+}
+
+.team-img-holder {
+    margin-bottom: 20px;
+}
+
+.team-img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 5px solid #fff;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.team-name {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.team-role {
+    font-size: 1rem;
+    color: #ff4a4a; /* Color de acento del template */
+    font-weight: 500;
+    margin-bottom: 15px;
+}
+
+.team-bio {
+    font-size: 1rem;
+    color: #777;
+    margin-bottom: 20px;
+}
+
+.team-social a {
+    color: #555;
+    font-size: 1.2rem;
+    margin: 0 10px;
+    transition: color 0.3s ease;
+}
+
+.team-social a:hover {
+    color: #ff4a4a;
+}
+/* --- Estilos para la página de Contacto --- */
+
+.contact-section .display-4 {
+    font-weight: 700;
+}
+
+/* Estilos para el formulario */
+.form-contact .form-group {
+    margin-bottom: 20px;
+}
+
+.form-contact .form-control {
+    border: 1px solid #e5e6e9;
+    border-radius: 5px;
+    height: 50px;
+    padding: 10px 20px;
+    font-size: 1rem;
+}
+
+.form-contact textarea.form-control {
+    height: auto;
+    min-height: 150px;
+}
+
+.form-contact .form-control:focus {
+    border-color: #ff4a4a;
+    box-shadow: none;
+}
+
+/* Wrapper para la información de contacto */
+.contact-info-wrapper {
+    background-color: #f8f9fa;
+    padding: 30px;
+    border-radius: 10px;
+    height: 100%;
+}
+
+.contact-info-wrapper h2 {
+    font-size: 1.8rem;
+    font-weight: 600;
+}
+
+.contact-info .contact-info__icon i {
+    font-size: 24px;
+    color: #ff4a4a;
+}
+
+/* Iconos de redes sociales */
+.contact-social-links h4 {
+    font-weight: 600;
+    font-size: 1.2rem;
+}
+
+.social-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #e9ecef;
+    color: #333;
+    font-size: 1rem;
+    margin-right: 10px;
+    transition: all 0.3s ease;
+}
+
+.social-icon:hover {
+    background-color: #ff4a4a;
+    color: #fff;
+    transform: scale(1.1);
+}

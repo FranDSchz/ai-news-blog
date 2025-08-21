@@ -1,11 +1,107 @@
-<!DOCTYPE html>
-<html lang="es-ar">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Us</title>
-</head>
-<body>
-    <h1>Sobre nosotros</h1>
-</body>
-</html>
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Acerca de Nosotros{% endblock %}
+
+{% block description %}Conoce más sobre nuestro blog de Inteligencia Artificial, nuestra misión y el equipo detrás del proyecto.{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'assets/css/customstyles.css' %}">{% endblock %}
+{% block content %}
+<main>
+    <div class="about-us-area section-padding">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-10 text-center">
+                    <div class="about-intro mb-80">
+                        <h1 class="display-4">Somos Apasionados por la Inteligencia Artificial</h1>
+                        <p class="lead mt-4">Nuestra misión es desmitificar la IA y explorar su impacto en el mundo, haciendo que el conocimiento sea accesible para todos.</p>
+                        <hr class="my-5">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row align-items-center mb-100">
+                <div class="col-lg-6">
+                    <div class="about-mission-img">
+                        <img src="https://images.unsplash.com/photo-1599058917212-d750089bc07e?q=80&w=2069&auto=format&fit=crop" alt="Equipo trabajando en un proyecto de IA" class="img-fluid rounded shadow-lg">
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="about-mission-text pl-lg-5 mt-5 mt-lg-0">
+                        <h2 class="mb-4">Nuestra Misión</h2>
+                        <p>Creemos que la Inteligencia Artificial es una de las tecnologías más transformadoras de nuestro tiempo. Por eso, nos dedicamos a crear contenido de alta calidad que sea claro, informativo y útil, tanto para expertos como para principiantes.</p>
+                        <ul class="list-unstyled mt-4">
+                            <li class="d-flex align-items-start mb-3">
+                                <i class="fas fa-check-circle text-primary mt-1 mr-3"></i>
+                                <span><strong>Análisis Profundos:</strong> Investigamos y explicamos los últimos avances en IA.</span>
+                            </li>
+                            <li class="d-flex align-items-start mb-3">
+                                <i class="fas fa-check-circle text-primary mt-1 mr-3"></i>
+                                <span><strong>Tutoriales Prácticos:</strong> Te enseñamos a aplicar la IA en proyectos reales.</span>
+                            </li>
+                            <li class="d-flex align-items-start">
+                                <i class="fas fa-check-circle text-primary mt-1 mr-3"></i>
+                                <span><strong>Debate Ético:</strong> Fomentamos la discusión sobre el futuro de la IA y su impacto en la sociedad.</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-12 text-center mb-80">
+                    <h2 class="section-title">Conoce a Nuestro Equipo</h2>
+                    <p class="lead">Las mentes creativas detrás de cada artículo y proyecto.</p>
+                </div>
+            </div>
+
+            <div class="row justify-content-center">
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="team-card">
+                        <div class="team-img-holder">
+                            <img src="https://images.unsplash.com/photo-1557862921-37829c790f19?q=80&w=2071&auto=format&fit=crop" class="team-img" alt="Foto de [Nombre]">
+                        </div>
+                        <h4 class="team-name">[Nombre Completo]</h4>
+                        <p class="team-role">Fundador y Editor Jefe</p>
+                        <p class="team-bio">Apasionado por la IA y la divulgación científica. Lidera la estrategia de contenido y la visión del blog.</p>
+                        <div class="team-social">
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#"><i class="fas fa-globe"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="team-card">
+                        <div class="team-img-holder">
+                            <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=1887&auto=format&fit=crop" class="team-img" alt="Foto de [Nombre]">
+                        </div>
+                        <h4 class="team-name">[Nombre Completo]</h4>
+                        <p class="team-role">Desarrollador y Analista de Datos</p>
+                        <p class="team-bio">Experto en machine learning y desarrollo de software. Crea los tutoriales técnicos y análisis de datos.</p>
+                        <div class="team-social">
+                            <a href="#"><i class="fab fa-github"></i></a>
+                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="team-card">
+                        <div class="team-img-holder">
+                            <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=2070&auto=format&fit=crop" class="team-img" alt="Foto de [Nombre]">
+                        </div>
+                        <h4 class="team-name">[Nombre Completo]</h4>
+                        <p class="team-role">Redactora y Especialista en Ética</p>
+                        <p class="team-bio">Investiga y escribe sobre las implicaciones éticas y sociales de la inteligencia artificial.</p>
+                        <div class="team-social">
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                            <a href="#"><i class="fas fa-globe"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

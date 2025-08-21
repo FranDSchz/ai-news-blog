@@ -37,7 +37,6 @@ def home(request):
         'trending_bottom_posts': trending_bottom_posts,
         'right_content_posts': right_content_posts,
         'weekly_news_posts': weekly_news_posts,
-        'categorias': categorias,
         'posts_whats_new': posts_whats_new,
         'weekly2_news_posts': weekly2_news_posts,
         'recent_articles_posts': recent_articles_posts,
@@ -72,7 +71,7 @@ def post_detail(request,pk):
     
     perfil_autor = post.autor.perfil
     
-    categorias = Categoria.objects.all()
+    
     
     if request.method == 'POST':
         if not request.user.is_authenticated:
@@ -99,7 +98,6 @@ def post_detail(request,pk):
         'post': post,
         'posts_recientes': posts_recientes,
         'categorias_post': categorias_post,
-        'categorias':categorias,
         'comentarios': comentarios,       
         'comentario_form': comentario_form,
         'count_coment':count_coment,
@@ -114,7 +112,6 @@ def posts_por_categoria(request, categoria_id=None):
     # 1. Definimos el queryset base
     posts = Post.objects.filter(estado='publicado')
     categoria = None
-    categorias_base = Categoria.objects.all()
     # 2. Si se proporciona un categoria_id, filtramos por esa categoría
     if categoria_id:
         categoria = get_object_or_404(Categoria, id=categoria_id)
@@ -135,7 +132,6 @@ def posts_por_categoria(request, categoria_id=None):
         'categoria': categoria,
         'posts': posts,
         'orden_actual': orden,
-        'categorias':categorias_base
     }
     return render(request, 'noticias/categoria_posts.html', context)
 
@@ -159,7 +155,7 @@ def explorar_noticias(request):
     # Creamos una instancia de nuestro formulario, pasándole los datos que vienen por GET
     # request.GET contendrá un diccionario como {'categoria': '1', 'ordenar': 'titulo_asc'}
     form = PostFilterForm(request.GET)
-    categorias = Categoria.objects.all()
+    
     # Django validará que los datos recibidos son coherentes con el formulario
     if form.is_valid():
         cleaned_data = form.cleaned_data
@@ -182,7 +178,6 @@ def explorar_noticias(request):
     context = {
         'posts': queryset,
         'filter_form': form, # Pasamos el formulario a la plantilla
-        'categorias':categorias
     }
     return render(request, 'noticias/explorar_noticias.html', context)
 

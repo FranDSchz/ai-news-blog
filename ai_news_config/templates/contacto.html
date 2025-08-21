@@ -1,11 +1,96 @@
-<!DOCTYPE html>
-<html lang="es-ar">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Conctact</title>
-</head>
-<body>
-    <h1>Contacto</h1>
-</body>
-</html>
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Contacto{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'assets/css/customstyles.css' %}">{% endblock %}
+{% block content %}
+<main>
+    <section class="contact-section section-padding">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8 text-center mb-80">
+                    <h1 class="display-4">¿Tienes Preguntas?</h1>
+                    <p class="lead mt-4">Nos encantaría saber de ti. Completa el formulario a continuación o utiliza uno de nuestros otros canales de comunicación.</p>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-8">
+                    <h2 class="mb-4">Envíanos un Mensaje</h2>
+                    
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+
+                    <form class="form-contact contact_form" method="post" action="{% url 'contacto' %}">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    {{ form.nombre }}
+                                    <div class="invalid-feedback">{{ form.nombre.errors|first }}</div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    {{ form.email }}
+                                    <div class="invalid-feedback">{{ form.email.errors|first }}</div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group">
+                                    {{ form.asunto }}
+                                    <div class="invalid-feedback">{{ form.asunto.errors|first }}</div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group">
+                                    {{ form.mensaje }}
+                                    <div class="invalid-feedback">{{ form.mensaje.errors|first }}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group mt-3">
+                            <button type="submit" class="button button-contactForm boxed-btn">Enviar Mensaje</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="contact-info-wrapper">
+                        <h2 class="mb-4">Información de Contacto</h2>
+                        <div class="media contact-info">
+                            <span class="contact-info__icon"><i class="fas fa-map-marker-alt"></i></span>
+                            <div class="media-body">
+                                <h3>Resistencia, Chaco</h3>
+                                <p>Argentina</p>
+                            </div>
+                        </div>
+                        <div class="media contact-info">
+                            <span class="contact-info__icon"><i class="fas fa-envelope"></i></span>
+                            <div class="media-body">
+                                <h3><a href="mailto:francodamiansanchez10@gmail.com">francodamiansanchez10@gmail.com</a></h3>
+                                <p>¡Envíanos tu consulta!</p>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-social-links mt-5">
+                            <h4 class="mb-3">Síguenos en Redes</h4>
+                            <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#" class="social-icon"><i class="fab fa-github"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock %}
