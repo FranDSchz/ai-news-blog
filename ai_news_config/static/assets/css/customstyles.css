@@ -256,3 +256,11 @@
     color: #fff;
     transform: scale(1.1);
 }
+/* --- Estilos para las etiquetas del formulario de contacto --- */
+
+.form-contact .form-group label {
+    display: block; /* Asegura que la etiqueta ocupe su propia línea */
+    font-weight: 600;
+    margin-bottom: 8px; /* Espacio entre la etiqueta y el campo */
+    color: #333;
+}

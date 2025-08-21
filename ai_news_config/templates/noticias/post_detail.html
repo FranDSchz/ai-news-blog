@@ -95,7 +95,7 @@
                </div>
                <div class="blog-author">
                   <div class="media align-items-center">
-                     <img src="{{perfil_autor.imagen_perfil.url}}" alt="{{post.autor.first_name}} {{post.autor.last_name}}"> <!-- DEUDA TECNICA: Si la img de perfil no es de dimensiones nxn se se estirada-->
+                     <img src="{{perfil_autor.get_imagen_perfil_url}}" alt="{{post.autor.first_name}} {{post.autor.last_name}}"> <!-- DEUDA TECNICA: Si la img de perfil no es de dimensiones nxn se se estirada-->
                      <div class="media-body">
                         <a href="#">
                            <h4>{{post.autor.first_name}} {{post.autor.last_name}}</h4>
@@ -111,7 +111,7 @@
                      <div class="single-comment justify-content-between d-flex">
                         <div class="user justify-content-between d-flex">
                            <div class="thumb">
-                              <img src="{{com.usuario.perfil.imagen_perfil.url}}" alt="">
+                              <img src="{{com.usuario.perfil.get_imagen_perfil_url}}" alt="">
                            </div>
                            <div class="desc">
                               <p class="comment">

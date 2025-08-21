@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}Contacto{% endblock %}
-{% block extra_css %}<link rel="stylesheet" href="{% static 'assets/css/customstyles.css' %}">{% endblock %}
+
 {% block content %}
 <main>
     <section class="contact-section section-padding">
@@ -34,24 +34,28 @@
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
+                                    <label for="{{ form.nombre.id_for_label }}">Tu Nombre:</label>
                                     {{ form.nombre }}
                                     <div class="invalid-feedback">{{ form.nombre.errors|first }}</div>
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
+                                    <label for="{{ form.email.id_for_label }}">Correo Electrónico:</label>
                                     {{ form.email }}
                                     <div class="invalid-feedback">{{ form.email.errors|first }}</div>
                                 </div>
                             </div>
                             <div class="col-12">
                                 <div class="form-group">
+                                    <label for="{{ form.asunto.id_for_label }}">Asunto:</label>
                                     {{ form.asunto }}
                                     <div class="invalid-feedback">{{ form.asunto.errors|first }}</div>
                                 </div>
                             </div>
                             <div class="col-12">
                                 <div class="form-group">
+                                    <label for="{{ form.mensaje.id_for_label }}">Mensaje:</label>
                                     {{ form.mensaje }}
                                     <div class="invalid-feedback">{{ form.mensaje.errors|first }}</div>
                                 </div>

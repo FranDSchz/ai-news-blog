@@ -1,12 +1,17 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser  #Agregue este models que trae un sistema de usuarios. 
-# Create your models here.
+from django.contrib.auth.models import AbstractUser 
+from django.templatetags.static import static
+
 class Usuario(AbstractUser):
-    ROL_CHOICES = [ ('admin', 'Administrador'),
-                   ('autor', 'Autor'), 
-                   ('lector','Lector')]  #Roles . 
+    ADMIN = 'admin'
+    AUTOR = 'autor'
+    LECTOR = 'lector'
     
-    rol = models.CharField(max_length=20, choices=ROL_CHOICES, default='lector') 
+    ROL_CHOICES = [ (ADMIN, 'Administrador'),
+                   (AUTOR, 'Autor'), 
+                   (LECTOR,'Lector')]  #Roles . 
+    
+    rol = models.CharField(max_length=20, choices=ROL_CHOICES, default=LECTOR) 
     creacion = models.DateTimeField(auto_now_add= True)
     
     def __str__(self):
@@ -20,7 +25,16 @@ class Perfil(models.Model):
     def __str__(self):
         return f'Perfil de {self.usuario.username}'
     
-
+    @property
+    def get_imagen_perfil_url(self):
+        """
+        Devuelve la URL de la imagen de perfil si existe, 
+        de lo contrario, devuelve la URL de la imagen por defecto.
+        """
+        if self.imagen_perfil and hasattr(self.imagen_perfil, 'url'):
+            return self.imagen_perfil.url
+        else:
+            return static('assets/img/avatars/default_3.png')
 class MensajeContacto(models.Model):
     nombre = models.CharField(max_length=100)
     email = models.EmailField()

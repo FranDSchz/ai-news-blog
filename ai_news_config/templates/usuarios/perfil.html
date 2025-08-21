@@ -1,29 +1,86 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-<!-- <div class="container mt-5">
-    <h2>Mi Perfil</h2>
-    
-    {% if messages %}
-        {% for message in messages %}
-            <div class="alert alert-success">{{ message }}</div>
-        {% endfor %}
-    {% endif %}
+{% extends 'base.html' %}
+{% load static %}
 
-    <div class="card">
-        <div class="card-body">
-            <h5 class="card-title">Hola, {{ user.username }}</h5>
-            <p class="card-text">Has iniciado sesión correctamente.</p>
-            
-            <a href="{% url 'apps.usuarios:logout' %}" class="btn btn-danger">Cerrar Sesión</a>
+{% block title %}Perfil de {{ perfil_a_ver.usuario.username }}{% endblock %}
+
+{% block content %}
+<main>
+    <div class.container style="padding: 60px 0;">
+        <div class="row justify-content-center">
+            <div class="col-lg-10 col-md-12">
+                <div class="card" style="border-radius: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+                    <div class="card-body p-5">
+                        <div class="row">
+                            <div class="col-md-4 text-center">
+                                <img src="{{ perfil_a_ver.get_imagen_perfil_url }}" class="img-fluid rounded-circle mb-3" alt="Foto de perfil de {{ perfil_a_ver.usuario.username }}" style="width: 150px; height: 150px; object-fit: cover;">
+                                <h3 class="card-title">{{ perfil_a_ver.usuario.username }}</h3>
+                                {% if perfil_a_ver.usuario.get_full_name %}
+                                    <p class="text-muted">{{ perfil_a_ver.usuario.get_full_name }}</p>
+                                {% endif %}
+
+                                {% if user.is_authenticated and user.perfil == perfil_a_ver %}
+                                    <a href="{% url 'apps.usuarios:editar_perfil' %}" class="btn btn-primary mb-3">Editar Mi Perfil</a>
+                                {% endif %}
+
+                                <hr>
+                                <p><strong>Rol:</strong> {{ perfil_a_ver.usuario.get_rol_display }}</p>
+                                <p><strong>Se unió:</strong> {{ perfil_a_ver.usuario.date_joined|date:"d M, Y" }}</p>
+                                {% if perfil_a_ver.usuario.last_login %}
+                                <p><strong>Última conexión:</strong> {{ perfil_a_ver.usuario.last_login|timesince }} atrás</p>
+                                {% endif %}
+                            </div>
+
+                            <div class="col-md-8">
+                                <h4>Biografía</h4>
+                                <p>{{ perfil_a_ver.biografia|default:"Este usuario aún no ha añadido una biografía."|linebreaks }}</p>
+                                <hr>
+
+                                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                    {% if perfil_a_ver.usuario.rol == 'autor' %}
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link active" id="articulos-tab" data-bs-toggle="tab" data-bs-target="#articulos" type="button" role="tab" aria-controls="articulos" aria-selected="true">Artículos Publicados ({{ posts_usuario.count }})</button>
+                                    </li>
+                                    {% endif %}
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link {% if perfil_a_ver.usuario.rol != 'autor' %}active{% endif %}" id="comentarios-tab" data-bs-toggle="tab" data-bs-target="#comentarios" type="button" role="tab" aria-controls="comentarios" aria-selected="false">Comentarios Recientes ({{ comentarios_usuario.count }})</button>
+                                    </li>
+                                </ul>
+                                
+                                <div class="tab-content" id="myTabContent" style="padding-top: 20px;">
+                                    {% if perfil_a_ver.usuario.rol == 'autor' %}
+                                    <div class="tab-pane fade show active" id="articulos" role="tabpanel" aria-labelledby="articulos-tab">
+                                        {% for post in posts_usuario %}
+                                            <div class="mb-2">
+                                                <a href="{% url 'noticias:post_detail' post.pk %}" style="color: #007bff;">{{ post.titulo }}</a>
+                                                <span class="text-muted d-block" style="font-size: 0.9em;">Publicado el {{ post.fecha_publicacion|date:"d M, Y" }}</span>
+                                            </div>
+                                        {% empty %}
+                                            <p>Este autor aún no ha publicado ningún artículo.</p>
+                                        {% endfor %}
+                                    </div>
+                                    {% endif %}
+                                    <div class="tab-pane fade {% if perfil_a_ver.usuario.rol != 'autor' %}show active{% endif %}" id="comentarios" role="tabpanel" aria-labelledby="comentarios-tab">
+                                        {% for comentario in comentarios_usuario %}
+                                            <div class="mb-3 p-2 border rounded">
+                                                <p class="mb-1">"{{ comentario.texto }}"</p>
+                                                <small class="text-muted">Comentó en <a href="{% url 'noticias:post_detail' comentario.post.pk %}#comentario-{{comentario.id}}" style="color: #007bff;">{{ comentario.post.titulo }}</a> - {{ comentario.fecha_creacion|timesince }} atrás</small>
+                                            </div>
+                                        {% empty %}
+                                            <p>Este usuario aún no ha realizado ningún comentario.</p>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
+        </div>
     </div>
-</div> -->
-<h1>{{perfil.biografia}}</h1>
-</body>
-</html>
+</main>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+{% endblock %}

@@ -3,21 +3,22 @@ from django.contrib.auth.models import Group
 from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, View
 from django.contrib import messages
-from .forms import RegistroUsuarioForm,ContactoForm
-from .models import Perfil
+from .forms import RegistroUsuarioForm,ContactoForm, UsuarioUpdateForm, PerfilUpdateForm
+from .models import Perfil, Usuario
+from apps.noticias.models import Post, Comentario
 from django.contrib.auth import logout
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
 
 class RegistroUsuario(CreateView):
+    model = Usuario
     template_name = 'usuarios/register.html'
     form_class = RegistroUsuarioForm
-    success_url = reverse_lazy('home')
+    success_url = reverse_lazy('apps.usuarios:login')
 
     def form_valid(self, form):
         self.object = form.save()  
-        Perfil.objects.create(usuario=self.object)
         messages.success(self.request, '¡Registro exitoso! Por favor, inicia sesión.')
         return redirect(self.get_success_url())
     
@@ -31,32 +32,46 @@ class LoginUsuario(LoginView):
 
 @login_required
 def perfil(request,pk):
-    perfil = get_object_or_404(Perfil,pk=pk)
-    context = {'perfil':perfil}
-    return render(request, 'usuarios/perfil.html',context)
+    perfil_a_ver = get_object_or_404(Perfil, pk=pk)
+    usuario_a_ver = perfil_a_ver.usuario
+    posts_usuario = Post.objects.filter(autor=usuario_a_ver, estado='publicado').order_by('-fecha_publicacion')
+    comentarios_usuario = Comentario.objects.filter(usuario=usuario_a_ver).order_by('-fecha_creacion')
+
+    context = {
+        'perfil_a_ver': perfil_a_ver,
+        'posts_usuario': posts_usuario,
+        'comentarios_usuario': comentarios_usuario,
+    }
+    return render(request, 'usuarios/perfil.html', context)
+
+@login_required
+def editar_perfil(request):
+    if request.method == 'POST':
+        # Pasamos la instancia del usuario y perfil actual a los formularios
+        usuario_form = UsuarioUpdateForm(request.POST, instance=request.user)
+        perfil_form = PerfilUpdateForm(request.POST, request.FILES, instance=request.user.perfil)
+
+        if usuario_form.is_valid() and perfil_form.is_valid():
+            usuario_form.save()
+            perfil_form.save()
+            messages.success(request, '¡Tu perfil ha sido actualizado exitosamente!')
+            # Redirigimos al perfil público del usuario
+            return redirect('apps.usuarios:perfil', pk=request.user.perfil.pk)
+    else:
+        usuario_form = UsuarioUpdateForm(instance=request.user)
+        perfil_form = PerfilUpdateForm(instance=request.user.perfil)
+
+    context = {
+        'usuario_form': usuario_form,
+        'perfil_form': perfil_form
+    }
+    return render(request, 'usuarios/editar_perfil.html', context)
+
 
 def logout_usuario(request):
- 
     logout(request)
     messages.success(request, '¡Has cerrado sesión exitosamente!')
     return redirect('home')
-
-def register(request):
-    if request.method == 'POST':
-        form = RegistroUsuarioForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            try:
-                grupo_miembro = Group.objects.get(name='Miembro')
-                user.groups.add(grupo_miembro)
-            except Group.DoesNotExist:
-                pass
-            messages.success(request, '¡Registro exitoso! Por favor, inicia sesión.')
-            return redirect('login')
-    else:
-        form = RegistroUsuarioForm()
-    return render(request, 'usuarios/register.html', {'form': form})
-
 
 def contacto(request):
     # Lógica para procesar el envío del formulario (POST)

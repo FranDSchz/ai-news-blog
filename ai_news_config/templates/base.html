@@ -22,7 +22,7 @@
             <link rel="stylesheet" href="{% static 'assets/css/slick.css' %}">
             <link rel="stylesheet" href="{% static 'assets/css/nice-select.css' %}">
             <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
-            <!--<link rel="stylesheet" href="{% static 'assets/css/customstyles.css' %}"> Ya lo agregue a lista_categorias con extra css, ver si ninguna otra lo necesita..-->
+            <link rel="stylesheet" href="{% static 'assets/css/customstyles.css' %}">
             <!-- DEUDA TENICA usar una herramienta de Django (como django-compressor) 
              para unirlos y minificarlos en un solo archivo. Esto mejora drásticamente el tiempo de carga -->
              {% block extra_css %}{% endblock %}
@@ -109,7 +109,7 @@
                                             <!-- <li><a href="{% url 'nosotros' %}">Acerca de?</a></li> -->
                                             <li><a href="{% url 'contacto' %}">Contacto</a></li>
                                             {% if user.is_authenticated %}
-                                            <li><a href="#">Mi Perfil</a> 
+                                            <li><a href="{% url 'apps.usuarios:perfil' user.perfil.id %}">Mi Perfil</a> 
                                                 <ul class="submenu">
                                                     <li><a href="{% url 'apps.usuarios:perfil' user.perfil.id %}">Ver Mi Perfil</a></li>
                                                     <li>

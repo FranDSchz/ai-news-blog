@@ -58,12 +58,6 @@ class Video(models.Model):
     def __str__(self):
         return self.titulo
     
-class Notificacion(models.Model):
-    usuario_destino = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    mensaje = models.CharField(max_length=255)
-    leida = models.BooleanField(default=False)
-    fecha_creacion = models.DateTimeField(auto_now_add=True)
-
     @property
     def embed_url(self):
         """
@@ -75,3 +69,9 @@ class Notificacion(models.Model):
             return f"https://www.youtube.com/embed/{video_id}"
         # Podríamos añadir más lógica para otros tipos de URLs de YouTube si fuera necesario
         return self.url_video # Devuelve la URL original si no es el formato esperado
+    
+class Notificacion(models.Model):
+    usuario_destino = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    mensaje = models.CharField(max_length=255)
+    leida = models.BooleanField(default=False)
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
