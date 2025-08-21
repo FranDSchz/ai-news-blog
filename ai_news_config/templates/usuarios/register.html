@@ -1,40 +1,80 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
- 
-<div class="container mt-5">
-    <h2>Registro de Usuario</h2>
+{% extends 'base.html' %}
+{% load static %}
 
-    {% if form.errors %}
-        <div class="alert alert-danger">
-            <strong>¡Ups! Hubo algunos errores en tu registro:</strong>
-            <ul>
-                {% for field, errors in form.errors.items %}
-                    {% for error in errors %}
-                        <li>{{ error }}</li>
-                    {% endfor %}
-                {% endfor %}
-            </ul>
+{% block title %}Registro de Usuario - AI News Blog{% endblock %}
+
+{% block content %}
+<main>
+    <div class="container" style="padding: 60px 0;">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-md-10">
+                <div class="card" style="border-radius: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+                    <div class="card-body p-5">
+                        <h2 class="card-title text-center mb-4">Registro de Nuevo Usuario</h2>
+
+                        {% if form.errors %}
+                            <div class="alert alert-danger">
+                                <strong>¡Ups! Revisa los siguientes errores:</strong>
+                                <ul>
+                                    {% for field, errors in form.errors.items %}
+                                        {% for error in errors %}
+                                            <li>{{ error }}</li>
+                                        {% endfor %}
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        {% endif %}
+
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert alert-success">{{ message }}</div>
+                            {% endfor %}
+                        {% endif %}
+
+                        <form method="post">
+                            {% csrf_token %}
+                            <div class="row">
+                                {% for field in form %}
+                                <div class="form-group col-md-6 mb-3">
+                                    <label for="{{ field.id_for_label }}">{{ field.label }}:</label>
+                                    {{ field }}
+                                </div>
+                                {% endfor %}
+                            </div>
+
+                            <div class="d-grid mt-4">
+                                <button type="submit" class="btn btn-primary btn-lg">Registrarme</button>
+                            </div>
+                        </form>
+                         <hr>
+                        <div class="text-center">
+                            <p>¿Ya tienes una cuenta? <a href="{% url 'apps.usuarios:login' %}">Inicia sesión</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    {% endif %}
-    {% if messages %}
-        {% for message in messages %}
-            <div class="alert alert-success">{{ message }}</div>
-        {% endfor %}
-    {% endif %}
+    </div>
+</main>
+{% endblock %}
 
-    <form method="post">
-        {% csrf_token %}
-        <table>
-            {{ form.as_table }}
-        </table>
-        <button type="submit" class="btn btn-primary mt-3">Registrar</button>
-    </form>
-</div>
-</body>
-</html>
+{% block extra_css %}
+<style>
+    /* Estilos para que los campos del formulario ocupen todo el ancho y se vean uniformes */
+    input[type="text"],
+    input[type="password"],
+    input[type="email"] {
+        display: block;
+        width: 100%;
+        padding: .375rem .75rem;
+        font-size: 1rem;
+        line-height: 1.5;
+        color: #495057;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #ced4da;
+        border-radius: .25rem;
+        transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    }
+</style>
+{% endblock %}

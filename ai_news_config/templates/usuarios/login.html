@@ -1,34 +1,77 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
- 
-<div class="container mt-5" style="max-width: 500px;">
-    <h2>Iniciar Sesión</h2>
+{% extends 'base.html' %}
+{% load static %}
 
-    {% if messages %}
-        {% for message in messages %}
-            <div class="alert alert-success" role="alert">
-                {{ message }}
+{% block title %}Iniciar Sesión - AI News Blog{% endblock %}
+
+{% block content %}
+<main>
+    <div class="container" style="padding: 60px 0;">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 col-md-8">
+                <div class="card" style="border-radius: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+                    <div class="card-body p-5">
+                        <h2 class="card-title text-center mb-4">Iniciar Sesión</h2>
+
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert alert-success" role="alert">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+
+                        {% if form.errors %}
+                            <div class="alert alert-danger">
+                                Tu nombre de usuario y contraseña no coinciden. Por favor, inténtalo de nuevo.
+                            </div>
+                        {% endif %}
+
+                        <form method="post">
+                            {% csrf_token %}
+                            
+                            <div class="form-group mb-3">
+                                <label for="id_username">Usuario:</label>
+                                {{ form.username }}
+                            </div>
+                            <div class="form-group mb-4">
+                                <label for="id_password">Contraseña:</label>
+                                {{ form.password }}
+                            </div>
+
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary btn-lg">Ingresar</button>
+                            </div>
+                            <div class="text-center mt-3">
+                                <a href="{% url 'password_reset' %}">¿Olvidaste tu contraseña?</a>
+                            </div>
+                        </form>
+                        <hr>
+                        <div class="text-center">
+                            <p>¿No tienes una cuenta? <a href="{% url 'apps.usuarios:registrar' %}">Regístrate aquí</a></p>
+                        </div>
+                    </div>
+                </div>
             </div>
-        {% endfor %}
-    {% endif %}
-
-    {% if form.errors %}
-        <div class="alert alert-danger">
-            Tu nombre de usuario y contraseña no coinciden.
         </div>
-    {% endif %}
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
-    </form>
-</div>
+    </div>
+</main>
+{% endblock %}
 
-</body>
-</html>
+{% block extra_css %}
+<style>
+    /* Agrega un poco de estilo para que los campos del formulario se vean mejor */
+    #id_username, #id_password {
+        display: block;
+        width: 100%;
+        padding: .375rem .75rem;
+        font-size: 1rem;
+        line-height: 1.5;
+        color: #495057;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #ced4da;
+        border-radius: .25rem;
+        transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    }
+</style>
+{% endblock %}

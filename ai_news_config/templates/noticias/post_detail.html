@@ -24,7 +24,14 @@
                      </ul>
                      <div class="post-body">{{ post.contenido|safe }}</div>
                   </div>
-               </div>
+               </div> <div class="social-share mt-4 mb-4">
+                  <hr>
+                  <h4>Compartir en:</h4>
+                  <a href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}&text={{ post.titulo }}" target="_blank" class="btn btn-info"><i class="fab fa-twitter"></i> Twitter</a>
+                  <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}" target="_blank" class="btn btn-primary"><i class="fab fa-facebook"></i> Facebook</a>
+                  <a href="https://api.whatsapp.com/send?text={{ post.titulo }}%20{{ request.build_absolute_uri }}" target="_blank" class="btn btn-success"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+                  <hr>
+            </div>
                <div class="navigation-top">
                   <div class="d-sm-flex justify-content-between text-center">
                      <!-- <p class="like-info"><span class="align-middle"><i class="fa fa-heart"></i></span> Lily and 4

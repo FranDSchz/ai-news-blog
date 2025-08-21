@@ -112,6 +112,14 @@
                                             <li><a href="#">Mi Perfil</a> 
                                                 <ul class="submenu">
                                                     <li><a href="{% url 'apps.usuarios:perfil' user.perfil.id %}">Ver Mi Perfil</a></li>
+                                                    <li>
+                                                        <a href="{% url 'noticias:lista_notificaciones' %}">
+                                                            Notificaciones 
+                                                            {% if notificaciones_no_leidas > 0 %}
+                                                                <span class="badge bg-danger">{{ notificaciones_no_leidas }}</span>
+                                                            {% endif %}
+                                                        </a>
+                                                    </li>
                                                     {% if user.rol == 'autor' or user.is_superuser %}
                                                     <li><a href="{% url 'noticias:post_crear' %}">Crear Artículo</a></li>
                                                     {% endif %}
@@ -132,9 +140,8 @@
                                 <div class="header-right-btn f-right d-none d-lg-block">
                                     <i class="fas fa-search special-tag"></i>
                                     <div class="search-box">
-                                        <form action="#">
-                                            <input type="text" placeholder="Search">
-                                            
+                                        <form action="{% url 'noticias:buscar_posts' %}" method="get">
+                                             <input type="text" name="q" placeholder="Buscar..."> 
                                         </form>
                                     </div>
                                 </div>

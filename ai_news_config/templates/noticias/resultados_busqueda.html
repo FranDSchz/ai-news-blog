@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Resultados de Búsqueda - AI News Blog{% endblock %}
+
+{% block content %}
+<main>
+    <div class="trending-area fix">
+        <div class="container">
+            <div class="trending-main">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="trending-top mb-30">
+                            <div class="trend-top-img">
+                                {% if posts.0.imagen %}
+                                    <img src="{{ posts.0.imagen.url }}" alt="{{ posts.0.titulo }}" style="width: 100%; height: 400px; object-fit: cover;">
+                                {% else %}
+                                    <img src="{% static 'assets/img/hero/header_card.jpg' %}" alt="Resultados de búsqueda" style="width: 100%; height: 400px; object-fit: cover;">
+                                {% endif %}
+                                <div class="trend-top-cap">
+                                    <span>Resultados de la búsqueda</span>
+                                    <h2><a>"{{ query }}"</a></h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="weekly-news-area pt-50">
+        <div class="container">
+           <div class="weekly-wrapper">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="section-tittle mb-30">
+                            <h3>Artículos Encontrados</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="weekly-news-active dot-style d-flex dot-style">
+                            {% for post in posts %}
+                            <div class="weekly-single">
+                                <div class="weekly-img">
+                                    <img src="{{ post.imagen.url }}" alt="{{ post.titulo }}">
+                                </div>
+                                <div class="weekly-caption">
+                                    <span class="color1">{{ post.categoria.nombre }}</span>
+                                    <h4><a href="{% url 'noticias:post_detail' post.pk %}">{{ post.titulo }}</a></h4>
+                                </div>
+                            </div> 
+                            {% empty %}
+                            <div class="col-lg-12">
+                                <div class="alert alert-warning" role="alert">
+                                    <h4>No se encontraron artículos que coincidan con tu búsqueda.</h4>
+                                    <p>Prueba con otras palabras clave o revisa la ortografía.</p>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+           </div>
+        </div>
+    </div>           
+    </main>
+{% endblock %}
