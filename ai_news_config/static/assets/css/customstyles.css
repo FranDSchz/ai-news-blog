@@ -264,3 +264,109 @@
     margin-bottom: 8px; /* Espacio entre la etiqueta y el campo */
     color: #333;
 }
+/* --- Estilos para la página de Resultados de Búsqueda --- */
+
+/* Encabezado */
+.search-header {
+    text-align: center;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 40px;
+}
+
+.search-title {
+    font-weight: 700;
+}
+
+.search-query {
+    font-size: 1.25rem;
+    color: #555;
+    margin-top: 10px;
+}
+
+.result-count {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 5px 15px;
+    background-color: #f0f0f0;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* Tarjeta de resultado individual */
+.search-result-card {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.07);
+    margin-bottom: 30px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.search-result-card:hover {
+    box-shadow: 0 10px 35px rgba(0,0,0,0.1);
+    transform: translateY(-5px);
+}
+
+.search-result-card .card-img {
+    height: 100%;
+    object-fit: cover;
+}
+
+.search-result-card .card-body {
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+}
+
+.search-result-card .card-meta {
+    font-size: 0.85rem;
+}
+
+.search-result-card .post-category {
+    background-color: #ff4a4a;
+    color: #fff;
+    padding: 3px 10px;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.search-result-card .post-date {
+    margin-left: 15px;
+    color: #777;
+}
+
+.search-result-card .card-title a {
+    color: #333;
+    font-weight: 600;
+    font-size: 1.5rem;
+}
+
+.search-result-card .card-title a:hover {
+    color: #ff4a4a;
+}
+
+.search-result-card .card-text {
+    color: #666;
+    flex-grow: 1; /* Empuja el botón "Leer Más" hacia abajo */
+    margin-top: 15px;
+}
+
+.search-result-card .btn-link {
+    color: #ff4a4a;
+    font-weight: bold;
+    text-decoration: none;
+    align-self: flex-start; /* Alinea el botón a la izquierda */
+    margin-top: 15px;
+}
+
+.search-result-card .btn-link:hover {
+    text-decoration: underline;
+}
+
+/* Mensaje de "No se encontraron resultados" */
+.no-results-found {
+    padding: 60px 20px;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+}
