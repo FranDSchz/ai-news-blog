@@ -104,7 +104,10 @@ def post_detail(request,pk):
             return redirect('noticias:post_detail', pk=post.pk)
     else:
         comentario_form = ComentarioForm()
-        
+    cat_count = Categoria.objects.annotate(
+        num_posts=Count('posts', filter=Q(posts__estado='publicado'))
+    )
+
     context = {
         'post': post,
         'posts_recientes': posts_recientes,
@@ -114,7 +117,8 @@ def post_detail(request,pk):
         'count_coment':count_coment,
         'perfil_autor': perfil_autor,
         'next_post':next_post,
-        'prev_post':prev_post
+        'prev_post':prev_post,
+        'cat_count':cat_count
     }            
     
     return render(request,'noticias/post_detail.html',context)
@@ -148,11 +152,15 @@ def posts_por_categoria(request, categoria_id=None):
         posts = posts.order_by('-titulo')
     else:
         posts = posts.order_by('-fecha_publicacion')
-
+        
+    cat_count = Categoria.objects.annotate(
+        num_posts=Count('posts', filter=Q(posts__estado='publicado'))
+    )
     context = {
         'categoria': categoria,
         'posts': posts,
         'orden_actual': orden,
+        'cat_count':cat_count
     }
     return render(request, 'noticias/categoria_posts.html', context)
 

@@ -62,10 +62,9 @@
                      </ul> Deuda tecnica:Conectar las redes sociales -->
                   </div>
                   <div class="navigation-area"> <!-- DEUDA TECNICA: Determinar si filtrar por categoria y fecha_publicacion es el mejor criterio, un conviene simplificar y decir que 1 post tiene 1 sola categoria?-->
-                     {% if prev_post %}
                      <div class="row">
-                        <div
-                           class="col-lg-6 col-md-6 col-12 nav-left flex-row d-flex justify-content-start align-items-center">
+                        {% if prev_post %}
+                        <div class="col-lg-6 col-md-6 col-12 nav-left flex-row d-flex justify-content-start align-items-center">
                            <div class="thumb">
                               <a href="{% url 'noticias:post_detail' prev_post.id %}">
                                  {% if prev_post.imagen.url %}
@@ -88,8 +87,7 @@
                         </div>
                         {% endif %}
                         {% if next_post %} <!--DEUDA TECNICA: Cuando no hay noticia anterior se ve mal-->
-                        <div
-                           class="col-lg-6 col-md-6 col-12 nav-right flex-row d-flex justify-content-end align-items-center">
+                        <div class="col-lg-6 col-md-6 col-12 nav-right flex-row d-flex justify-content-end align-items-center">
                            <div class="detials">
                               <p>Siguiente</p>
                               <a href="{% url 'noticias:post_detail' next_post.id %}">
@@ -228,14 +226,14 @@
                   <aside class="single_sidebar_widget post_category_widget">
                      <h4 class="widget_title">Categorias</h4>
                      <ul class="list cat-list">
-                        {% for cat in categorias %}
-                        <li>
+                        {% for cat in cat_count %}
+                           <li>
                            <a href="{% url 'noticias:posts_por_categoria' cat.id%}" class="d-flex">
                               <p>{{cat.nombre}}</p>
-                              <p>({{ cat.posts.count }})</p>
+                              <p>({{ cat.num_posts }})</p>
                            </a>
-                        </li>
-                        {% endfor %}
+                           </li>
+                           {% endfor %}
                      </ul>
                   </aside>
                   <aside class="single_sidebar_widget popular_post_widget">
