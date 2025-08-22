@@ -44,7 +44,10 @@
                             {% for post in posts %}
                             <div class="weekly-single">
                                 <div class="weekly-img">
-                                    <img src="{{ post.imagen.url }}" alt="{{ post.titulo }}">
+                                    {% if post.imagen.url %}
+                                        <img src="{{ post.imagen.url }}" alt="{{ post.titulo }}">
+                                        {% else %}<span class="text-muted">Sin imagen</span>{% endif %}
+                                    
                                 </div>
                                 <div class="weekly-caption">
                                     <span class="color1">{{ post.categoria.nombre }}</span>

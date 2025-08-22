@@ -1,28 +1,119 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    
-<div class="container" style="margin-top: 100px; margin-bottom: 100px;">
-    <div class="row">
-        <div class="col-lg-8 offset-lg-2">
-            <h2>{{ titulo }}</h2>
-            <hr>
-            <form method="post" enctype="multipart/form-data">
-                {% csrf_token %}
+{% extends 'base.html' %}
+{% load static %}
 
-                {{ form.as_p }}
+{% block title %}{{ titulo }}{% endblock %}
 
-                <button type="submit" class="btn btn-primary">Guardar</button>
-                <a href="{{ request.META.HTTP_REFERER|default:'/' }}" class="btn btn-secondary">Cancelar</a>
-            </form>
+{% block content %}
+<main>
+    <div class="container" style="padding: 60px 0;">
+        <div class="row justify-content-center">
+            <div class="col-lg-10 col-md-12">
+                <div class="card" style="border-radius: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+                    <div class="card-body p-5">
+                        <h2 class="card-title text-center mb-4">{{ titulo }}</h2>
+
+                        {% if form.errors %}
+                            <div class="alert alert-danger">
+                                <strong>¡Ups! Por favor, corrige los siguientes errores:</strong>
+                                <ul>
+                                    {% for field in form %}
+                                        {% for error in field.errors %}
+                                            <li>{{ field.label }}: {{ error }}</li>
+                                        {% endfor %}
+                                    {% endfor %}
+                                    {% for error in form.non_field_errors %}
+                                        <li>{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        {% endif %}
+
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            
+                            <div class="form-group mb-3">
+                                <label for="{{ form.titulo.id_for_label }}"><strong>Título:</strong></label>
+                                {{ form.titulo }}
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="{{ form.contenido.id_for_label }}"><strong>Contenido:</strong></label>
+                                {{ form.contenido }}
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="{{ form.categoria.id_for_label }}"><strong>Categorías:</strong></label>
+                                {{ form.categoria }}
+                                <small class="form-text text-muted">Mantén Ctrl (o Cmd en Mac) para seleccionar varias categorías.</small>
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <label><strong>Imagen Principal:</strong></label>
+                                
+                                {% if form.instance.imagen and form.instance.imagen.url %}
+                                <div class="mb-2">
+                                    <p>Imagen actual:</p>
+                                    <img src="{{ form.instance.imagen.url }}" alt="Imagen actual del post" style="max-height: 150px; border-radius: 5px;">
+                                </div>
+                                {% else %}<span class="text-muted">Sin imagen</span>{% endif %}
+                                <div id="image-preview-container" class="mb-2" style="display: none;">
+                                    <p>Nueva imagen:</p>
+                                    <img id="image-preview" src="#" alt="Vista previa de la nueva imagen" style="max-height: 150px; border-radius: 5px;">
+                                </div>
+                                
+                                {{ form.imagen }}
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <label for="{{ form.estado.id_for_label }}"><strong>Estado:</strong></label>
+                                {{ form.estado }}
+                            </div>
+
+                            <div class="d-grid mt-4">
+                                <button type="submit" class="btn btn-primary btn-lg">Guardar Cambios</button>
+                                <a href="{% url 'noticias:mis_articulos' %}" class="btn btn-secondary mt-2">Cancelar</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-</div>
+</main>
+{% endblock %}
 
-</body>
-</html>
+
+{% block extra_js %}
+<script>
+    // Espera a que el documento esté completamente cargado
+    document.addEventListener("DOMContentLoaded", function() {
+        // Selecciona el input de la imagen y el contenedor de la vista previa
+        const imageInput = document.getElementById("{{ form.imagen.id_for_label }}");
+        const previewContainer = document.getElementById("image-preview-container");
+        const previewImage = document.getElementById("image-preview");
+
+        // Escucha el evento 'change' en el input de la imagen
+        imageInput.addEventListener("change", function(event) {
+            // Obtiene el archivo seleccionado por el usuario
+            const file = event.target.files[0];
+
+            if (file) {
+                // Si hay un archivo, crea un objeto FileReader
+                const reader = new FileReader();
+
+                // Define qué hacer cuando el archivo se haya leído
+                reader.onload = function(e) {
+                    // Asigna la URL de datos del archivo a la imagen de vista previa
+                    previewImage.setAttribute("src", e.target.result);
+                    // Muestra el contenedor de la vista previa
+                    previewContainer.style.display = "block";
+                };
+
+                // Lee el archivo como una URL de datos
+                reader.readAsDataURL(file);
+            } else {
+                // Si no se selecciona ningún archivo, oculta la vista previa
+                previewContainer.style.display = "none";
+            }
+        });
+    });
+</script>
+{% endblock %}

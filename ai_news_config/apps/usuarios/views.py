@@ -10,6 +10,7 @@ from django.contrib.auth import logout
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
+from django.conf import settings
 
 class RegistroUsuario(CreateView):
     model = Usuario
@@ -92,10 +93,11 @@ def contacto(request):
             
             Para gestionar este mensaje, por favor, visita el panel de administración.
             """
-            email_admin = 'francodamiansanchez10@gmail.com' # Cambia esto por tu email
             
+            email_remitente = settings.DEFAULT_FROM_EMAIL
+            email_destinatario = settings.EMAIL_ADMIN_CONTACTO
             try:
-                send_mail(asunto, mensaje_email, 'no-responder@miblog.com', [email_admin])
+                send_mail(asunto, mensaje_email, email_remitente, [email_destinatario])
             except Exception as e:
                 # Opcional: Manejar errores de envío de email
                 print(f"Error al enviar email: {e}")

@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %}{{ titulo }}{% endblock %}
+
+{% block content %}
+<main>
+    <div class="container" style="padding: 60px 0;">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 text-center">
+                <h2>{{ titulo }}</h2>
+                <p class="lead">¿Estás seguro de que quieres eliminar permanentemente "{{ objeto }}"?</p>
+                <form method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Sí, Eliminar</button>
+                    <a href="{{ request.META.HTTP_REFERER }}" class="btn btn-secondary">Cancelar</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

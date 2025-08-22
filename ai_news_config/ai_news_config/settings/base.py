@@ -128,3 +128,7 @@ LOGIN_URL = 'apps.usuarios:login'
 LOGOUT_REDIRECT_URL = '/'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_ADMIN_CONTACTO = 'francodamiansanchez10@gmail.com'
+
+# Email que aparecerá como remitente por defecto
+DEFAULT_FROM_EMAIL = 'no-responder@tu-dominio.com'

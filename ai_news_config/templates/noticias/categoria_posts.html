@@ -19,7 +19,11 @@
                 {% for post in posts %} <!--Deuda Tecnica: mejorar los estilos-->
                     <article class="blog_item">
                         <div class="blog_item_img">
+                            {% if post.imagen.url %}
                             <img class="card-img rounded-0" src="{{ post.imagen.url }}" alt="{{ post.titulo }}">
+                            {% else %}
+                            <span class="text-muted">Sin imagen</span>
+                            {% endif %}
                             <a href="#" class="blog_item_date">
                                 <h3>{{ post.fecha_publicacion|date:"d" }}</h3>
                                 <p>{{ post.fecha_publicacion|date:"M" }}</p>
@@ -43,8 +47,8 @@
 
             <div class="col-lg-4">
                 <div class="blog_right_sidebar">
-                    <aside class="single_sidebar_widget search_widget">
-                        <form action="#">
+                    <!--<aside class="single_sidebar_widget search_widget">
+                         <form action="#">
                            <div class="form-group">
                               <div class="input-group mb-3">
                                  <input type="text" class="form-control" placeholder='Buscar...'>
@@ -55,7 +59,7 @@
                            </div>
                            <button class="button rounded-0 primary-bg text-white w-100 btn_1 boxed-btn" type="submit">Buscar</button>
                         </form>
-                    </aside>
+                    </aside> PUEDE SER UNA MEJORA FUTURA-->
                     <aside class="single_sidebar_widget post_category_widget">
                         <h4 class="widget_title">Categorías</h4>
                         <ul class="list cat-list">

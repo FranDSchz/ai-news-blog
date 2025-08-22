@@ -1,7 +1,7 @@
 # ai_news_config/apps/noticias/forms.py
 
 from django import forms
-from .models import Post, Categoria, Comentario
+from .models import Post, Categoria, Comentario, Video
 
 class PostForm(forms.ModelForm):
     class Meta:
@@ -30,7 +30,7 @@ class ComentarioForm(forms.ModelForm):
         labels = {
             'texto': '', # Dejamos la etiqueta vacía para que no aparezca "Texto:"
         }
-        
+
 class PostFilterForm(forms.Form):
     # Opciones para el campo de ordenamiento
     ORDEN_CHOICES = [
@@ -57,3 +57,31 @@ class PostFilterForm(forms.Form):
         initial='fecha_desc', # Valor por defecto
         widget=forms.Select(attrs={'class': 'form-control'})
     )
+    
+class ComentarioUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Comentario
+        fields = ['texto']
+        widgets = {
+            'texto': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+        }
+        
+class CategoriaForm(forms.ModelForm):
+    class Meta:
+        model = Categoria
+        fields = ['nombre', 'descripcion', 'imagen']
+        widgets = {
+            'nombre': forms.TextInput(attrs={'class': 'form-control'}),
+            'descripcion': forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),
+        }
+
+class VideoForm(forms.ModelForm):
+    class Meta:
+        model = Video
+        fields = ['titulo', 'descripcion', 'categoria', 'url_video']
+        widgets = {
+            'titulo': forms.TextInput(attrs={'class': 'form-control'}),
+            'descripcion': forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),
+            'categoria': forms.Select(attrs={'class': 'form-control'}),
+            'url_video': forms.URLInput(attrs={'class': 'form-control', 'placeholder': 'Ej: https://www.youtube.com/watch?v=...'}),
+        }

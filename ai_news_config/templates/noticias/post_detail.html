@@ -9,20 +9,35 @@
             <div class="col-lg-8 posts-list">
                <div class="single-post">
                   <div class="feature-img">
+                     {% if post.imagen.url %}
                      <img class="img-fluid" src="{{post.imagen.url}}" alt="post.titulo"> 
+                     {% else %}<span class="text-muted">Sin imagen</span>{% endif %}
+                     
                      <!-- DEUDA TECNICA: set tam img -->
                   </div>
                   <div class="blog_details">
                      <h1>
                         {{post.titulo}}
                      </h1>
+                     {% if post.estado == 'borrador' and user.is_authenticated %}
+                        {% if user == post.autor or user.is_superuser %}
+                           <div class="alert alert-warning" role="alert">
+                              <strong>Estás viendo un borrador.</strong> Este artículo no es visible para el público.
+                           </div>
+                        {% endif %}
+                     {% endif %}
+                     {% if user.is_authenticated and user == post.autor or user.is_superuser%}
+                     <div class="author-actions mb-3">
+                        <a href="{% url 'noticias:post_editar' post.pk %}" class="btn btn-sm btn-info">Editar Post</a>
+                        <a href="{% url 'noticias:post_eliminar' post.pk %}" class="btn btn-sm btn-danger">Eliminar Post</a>
+                     </div>
+                     {% endif %}
                      <ul class="blog-info-link mt-3 mb-4"> <!-- DEUDA TECNICA: add href, ver si queda bien la fecha y categoria de esta forma-->
-                        <li><a href="#"><i class="fa fa-user"></i>{{post.autor.last_name}}, {{post.autor.first_name}}</a></li>
-                        <li><a href="#"><i class="fa fa-calendar"></i>{{ post.fecha_publicacion|date:"d M, Y" }}</a></li> 
-                        <li><a href="#"><i class="fa fa-tags"></i>{% for cat in categorias_post %}{{ cat.nombre }}{% if not forloop.last %}, {% endif %}{% endfor %}</a></li>
-                        <li><a href="#"><i class="fa fa-comments"></i> {{ count_coment }} Comentario{% if count_coment != 1 %}s{% endif %}</a></li> <!--DEUDA TENICA: Agregar condicionales para esc comment sin la s cuando count_coment = 1 -->
+                        <li><a href="{% url 'apps.usuarios:perfil' post.autor.perfil.pk %}"><i class="fa fa-user"></i>{{post.autor.first_name}} {{post.autor.last_name}}</a></li>
+                        <li><i class="fa fa-calendar"></i>{{ post.fecha_publicacion|date:"d M, Y" }}</li>
+                        <li><i class="fa fa-tags"></i>{% for cat in categorias_post %}<a href="{% url 'noticias:posts_por_categoria' cat.pk%}">{{ cat.nombre }}{% if not forloop.last %}, {% endif %}{% endfor %}</a></li>
                      </ul>
-                     <div class="post-body">{{ post.contenido|safe }}</div>
+                     <div class="post-body">{{ post.contenido|linebreaks }}</div>
                   </div>
                </div> <div class="social-share mt-4 mb-4">
                   <hr>
@@ -52,8 +67,11 @@
                         <div
                            class="col-lg-6 col-md-6 col-12 nav-left flex-row d-flex justify-content-start align-items-center">
                            <div class="thumb">
-                              <a href="{% url 'noticias:post_detail' prev_post.id %}"> 
-                                 <img class="img-fluid" width="60" height="60" src="{{prev_post.imagen.url}}" alt=""> <!-- DEUDA TECNICA: Limitar el tamaño de las imagenes 60x60-->
+                              <a href="{% url 'noticias:post_detail' prev_post.id %}">
+                                 {% if prev_post.imagen.url %}
+                                 <img class="img-fluid" width="60" height="60" src="{{prev_post.imagen.url}}" alt=""><!-- DEUDA TECNICA: Limitar el tamaño de las imagenes 60x60-->
+                                 {% else %}<span class="text-muted">Sin imagen</span>{% endif %} 
+                                  
                               </a>
                            </div>
                            <div class="arrow">
@@ -85,7 +103,10 @@
                            </div>
                            <div class="thumb">
                               <a href="{% url 'noticias:post_detail' next_post.id %}">
-                                 <img class="img-fluid" width="60" height="60"  src="{{next_post.imagen.url}}" alt="next_post.titulo"> <!-- DEUDA TECNICA: Limitar el tamaño de las imagenes 60x60-->
+                                 {% if next_post.imagen.url %}
+                                 <img class="img-fluid" width="60" height="60"  src="{{next_post.imagen.url}}" alt="next_post.titulo">
+                                 {% else %}<span class="text-muted">Sin imagen</span>{% endif %} 
+                                  <!-- DEUDA TECNICA: Limitar el tamaño de las imagenes 60x60-->
                               </a>
                            </div>
                         </div>
@@ -97,7 +118,7 @@
                   <div class="media align-items-center">
                      <img src="{{perfil_autor.get_imagen_perfil_url}}" alt="{{post.autor.first_name}} {{post.autor.last_name}}"> <!-- DEUDA TECNICA: Si la img de perfil no es de dimensiones nxn se se estirada-->
                      <div class="media-body">
-                        <a href="#">
+                        <a href="{% url 'apps.usuarios:perfil' post.autor.perfil.pk %}">
                            <h4>{{post.autor.first_name}} {{post.autor.last_name}}</h4>
                         </a>
                         <p>{{perfil_autor.biografia}}</p>
@@ -106,33 +127,54 @@
                </div>
                <div class="comments-area">
                   <h4>{{ count_coment }} Comentario{% if count_coment != 1 %}s{% endif %}</h4>
-                  {% for com in comentarios %}
-                  <div class="comment-list">
-                     <div class="single-comment justify-content-between d-flex">
-                        <div class="user justify-content-between d-flex">
-                           <div class="thumb">
-                              <img src="{{com.usuario.perfil.get_imagen_perfil_url}}" alt="">
-                           </div>
-                           <div class="desc">
-                              <p class="comment">
-                                 {{com.texto}}
-                              </p>
-                              <div class="d-flex justify-content-between">
-                                 <div class="d-flex align-items-center">
-                                    <h5>
-                                       <a href="{% url 'apps.usuarios:perfil' com.usuario.perfil.id %}">{{com.usuario.username}}</a>
-                                    </h5>
-                                    <p class="date">{{ com.fecha_creacion|date:"d M, Y \a\t H:i" }}</p>
-                                 </div>
-                                 <!-- <div class="reply-btn">
-                                    <a href="#" class="btn-reply text-uppercase">reply</a>
-                                 </div> DEUDA TECNICA: Implementar reply en proximas versiones-->
+                  {% for comentario in comentarios %}
+                  <div class="media mb-4" id="comentario-{{ comentario.id }}">
+                     <img src="{{ comentario.usuario.perfil.imagen_perfil.url }}" alt="Avatar" class="d-flex mr-3 rounded-circle" width="50" height="50" style="object-fit: cover;">
+                     <div class="media-body">
+                        <div class="d-flex justify-content-between">
+                              <div>
+                                 <h5 class="mt-0">
+                                    {% if comentario.eliminado %}
+                                          <span class="text-muted"><a href="{% url 'apps.usuarios:perfil' comentario.usuario.perfil.id %}">{{ comentario.usuario.username }}</a></span>
+                                    {% else %}
+                                          <a href="{% url 'apps.usuarios:perfil' comentario.usuario.perfil.id %}">{{ comentario.usuario.username }}</a>
+                                    {% endif %}
+                                    <small class="text-muted">- {{ comentario.fecha_creacion|timesince }} atrás
+                                          {% if comentario.editado and not comentario.eliminado %}
+                                             (editado)
+                                          {% endif %}
+                                    </small>
+                                 </h5>
                               </div>
-                           </div>
+            
+                              {% if not comentario.eliminado and user.is_authenticated %}
+                                 {% if user == comentario.usuario or user == comentario.post.autor or user.is_superuser %}
+                                 <div class="dropdown">
+                                    <button class="btn btn-sm btn-light" type="button" id="dropdownMenuButton-{{ comentario.id }}" data-bs-toggle="dropdown" aria-expanded="false">
+                                          <i class="fas fa-ellipsis-v"></i>
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton-{{ comentario.id }}">
+                                          {% if user == comentario.usuario %}
+                                          <li><a class="dropdown-item" href="{% url 'noticias:comentario_editar' comentario.pk %}">Editar</a></li>
+                                          {% endif %}
+                                          <li>
+                                             <form action="{% url 'noticias:comentario_eliminar' comentario.pk %}" method="post" style="display: inline;">
+                                                {% csrf_token %}
+                                                <button type="submit" class="dropdown-item text-danger" onclick="return confirm('¿Estás seguro de que quieres eliminar este comentario?');">Eliminar</button>
+                                             </form>
+                                          </li>
+                                    </ul>
+                                 </div>
+                                 {% endif %}
+                              {% endif %}
                         </div>
+
+                        <p>{{ comentario.texto|linebreaks }}</p>
                      </div>
                   </div>
-                  {% endfor %} <!-- DEUDA TECNICA: Podria agregar un if, si hay coms muestra el for normal, sino algun mensaje diciendo se el primero o algo asi..-->
+                  {% empty %}
+                  <p>Todavía no hay comentarios. ¡Sé el primero!</p>
+                  {% endfor %}
                </div>
                <div class="comment-form">
                   <h4>Deja un comentario</h4>
@@ -168,7 +210,7 @@
             </div>
             <div class="col-lg-4">
                <div class="blog_right_sidebar">
-                  <aside class="single_sidebar_widget search_widget">
+                  <!-- <aside class="single_sidebar_widget search_widget">
                      <form action="#">
                         <div class="form-group">
                            <div class="input-group mb-3">
@@ -182,7 +224,7 @@
                         <button class="button rounded-0 primary-bg text-white w-100 btn_1 boxed-btn"
                            type="submit">Search</button>
                      </form>
-                  </aside>
+                  </aside> PUEDE SER UNA MEJORA FUTURA-->
                   <aside class="single_sidebar_widget post_category_widget">
                      <h4 class="widget_title">Categorias</h4>
                      <ul class="list cat-list">
@@ -200,7 +242,9 @@
                      <h3 class="widget_title">Noticias Recientes</h3>
                      {% for post in posts_recientes %}
                      <div class="media post_item">
-                        <img src="{{post.imagen.url}}" height="80" width="80" alt="post"> <!-- DEUDA TECNICA: se ven estiradas las imagenes que no son cuadradas-->
+                        {% if post.imagen.url %}
+                           <img src="{{post.imagen.url}}" height="80" width="80" alt="post">
+                        {% else %}<span class="text-muted">Sin imagen</span>{% endif %} <!-- DEUDA TECNICA: se ven estiradas las imagenes que no son cuadradas-->
                         <div class="media-body">
                            <a href="{% url 'noticias:post_detail' post.id%}">
                               <h3>{{ post.titulo }}</h3>
@@ -226,4 +270,7 @@
          </div>
       </div>
    </section>
+{% endblock %}
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 {% endblock %}

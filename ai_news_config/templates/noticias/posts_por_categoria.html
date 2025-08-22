@@ -45,7 +45,10 @@
                             <div class="weekly-single">
                                 <div class="weekly-img">
                                     <a href="{% url 'noticias:detalle' post.pk %}">
+                                        {% if post.imagen.url %}
                                         <img src="{{ post.imagen.url }}" alt="{{ post.titulo }}">
+                                        {% else %}<span class="text-muted">Sin imagen</span>{% endif %}
+                                        
                                     </a>
                                 </div>
                                 <div class="weekly-caption">

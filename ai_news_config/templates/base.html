@@ -106,12 +106,24 @@
                                                 </ul>
                                             </li>
                                             <li><a href="{% url 'noticias:explorar_noticias' %}">Explorar</a></li>
-                                            <!-- <li><a href="{% url 'nosotros' %}">Acerca de?</a></li> -->
+                                            <li><a href="{% url 'nosotros' %}">Acerca de</a></li>
                                             <li><a href="{% url 'contacto' %}">Contacto</a></li>
                                             {% if user.is_authenticated %}
-                                            <li><a href="{% url 'apps.usuarios:perfil' user.perfil.id %}">Mi Perfil</a> 
+                                            {% if user.rol == 'autor' or user.is_superuser %}
+                                                <li><a href="#">Gestionar Contenido</a>
+                                                    <ul class="submenu">
+                                                        <li><a href="{% url 'noticias:mis_articulos' %}">Mis Artículos</a></li>
+                                                        <li><a href="{% url 'noticias:post_crear' %}">Crear Nuevo Artículo</a></li>
+                                                        <hr>
+                                                        <li><a href="{% url 'noticias:gestionar_categorias' %}">Gestionar Categorías</a></li>
+                                                        <li><a href="{% url 'noticias:gestionar_videos' %}">Gestionar Videos</a></li>
+                                                        </ul>
+                                                </li>
+                                            {% endif %}
+                                            <li><a href="#">Mi Cuenta</a> 
                                                 <ul class="submenu">
                                                     <li><a href="{% url 'apps.usuarios:perfil' user.perfil.id %}">Ver Mi Perfil</a></li>
+                                                    <li><a href="{% url 'apps.usuarios:editar_perfil' %}">Editar Perfil</a></li>
                                                     <li>
                                                         <a href="{% url 'noticias:lista_notificaciones' %}">
                                                             Notificaciones 
@@ -120,9 +132,6 @@
                                                             {% endif %}
                                                         </a>
                                                     </li>
-                                                    {% if user.rol == 'autor' or user.is_superuser %}
-                                                    <li><a href="{% url 'noticias:post_crear' %}">Crear Artículo</a></li>
-                                                    {% endif %}
                                                     <li><a href="{% url 'apps.usuarios:logout' %}">Cerrar Sesión</a></li>
                                                 </ul>
                                             </li>

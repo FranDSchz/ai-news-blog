@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% block title %}Mis Artículos{% endblock %}
+
+{% block content %}
+<main>
+    <div class="container" style="padding: 60px 0;">
+        <div class="row">
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2>Mis Artículos</h2>
+                    <a href="{% url 'noticias:post_crear' %}" class="btn btn-primary">Crear Nuevo Artículo</a>
+                </div>
+
+                <div class="card" style="border-radius: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Título</th>
+                                        <th scope="col">Estado</th>
+                                        <th scope="col">Fecha de Creación</th>
+                                        <th scope="col">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for post in posts %}
+                                    <tr>
+                                        <td>{{ post.titulo }}</td>
+                                        <td>
+                                            {% if post.estado == 'publicado' %}
+                                                <span class="badge bg-success">Publicado</span>
+                                            {% else %}
+                                                <span class="badge bg-secondary">Borrador</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ post.fecha_creacion|date:"d M, Y" }}</td>
+                                        <td>
+                                            <a href="{% url 'noticias:post_detail' post.pk %}" class="btn btn-sm btn-outline-info" title="Ver">Ver</a>
+                                            <a href="{% url 'noticias:post_editar' post.pk %}" class="btn btn-sm btn-outline-primary" title="Editar">Editar</a>
+                                            <a href="{% url 'noticias:post_eliminar' post.pk %}" class="btn btn-sm btn-outline-danger" title="Eliminar">Eliminar</a>
+                                        </td>
+                                    </tr>
+                                    {% empty %}
+                                    <tr>
+                                        <td colspan="4" class="text-center">Aún no has creado ningún artículo.</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

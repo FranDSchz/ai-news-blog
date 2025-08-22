@@ -30,10 +30,12 @@
                         <!-- Trending Top -->
                         <div class="trending-top mb-30">
                             <div class="trend-top-img">
+                                {% if trending_top_post.imagen.url %}
                                 <img src="{{ trending_top_post.imagen.url }}" alt="{{ trending_top_post.titulo }}">
+                                {% else %}<span class="text-muted">Sin imagen</span>{% endif %}
                                 <div class="trend-top-cap"> <!--DEUDA TECNICA: Por esta clase, no coinciden el color de las categorias-->
                                     <span>{{trending_top_post.categoria.first.nombre}}</span> <!-- DEUDA TECNICA: Y si tiene mas de una categoria?, criterio de seleccion por fecha_publicacion pobre, add criterio selec editor, visitas, likes, etc-->
-                                    <h2><a href="{% url 'noticias:post_detail' trending_top_post.id %}">{{trending_top_post.titulo}}<br> {{trending_top_post.contenido|truncatechars:150|safe}}</a></h2> <!-- POST-MVP: agregar subtitulo para mostrar ambos con un <br> en medio -->
+                                    <h2><a href="{% url 'noticias:post_detail' trending_top_post.id %}">{{trending_top_post.titulo}}<br> {{trending_top_post.contenido|truncatechars:150|linebreaks}}</a></h2> <!-- POST-MVP: agregar subtitulo para mostrar ambos con un <br> en medio -->
                                 </div>
                             </div>
                         </div>
@@ -44,7 +46,9 @@
                                 <div class="col-lg-4">
                                 <div class="single-bottom mb-35">
                                     <div class="trend-bottom-img mb-30">
+                                        {% if post.imagen.url %}
                                         <img src="{{post.imagen.url}}" alt="{{post.titulo}}">
+                                        {% else %}<span class="text-muted">Sin imagen</span>{% endif %}
                                     </div>
                                     <div class="trend-bottom-cap">
                                         <span class="color{{post.categoria.first.id}}">{{post.categoria.first.nombre}}</span> <!-- DEUDA TECNICA: = q en la linea 35 -->
@@ -61,7 +65,9 @@
                         {% for post in right_content_posts %}
                         <div class="trand-right-single d-flex">
                             <div class="trand-right-img">
+                                {% if post.imagen.url %}
                                 <img src="{{ post.imagen.url }}" alt="{{ post.titulo }}">
+                                {% else %}<span class="text-muted">Sin imagen</span>{% endif %}
                             </div>
                             <div class="trand-right-cap">
                                 <span class="color{{post.categoria.first.id}}">{{post.categoria.first.nombre}}</span>
@@ -93,7 +99,9 @@
                             {% for post in weekly_news_posts%}
                             <div class="weekly-single">
                                 <div class="weekly-img"> <!-- DEUDA TECNICA: Fijar weekly-img 360x420 en style.css-->
+                                    {% if post.imagen.url %}
                                     <img src="{{ post.imagen.url }}" alt="{{ post.titulo }}">
+                                    {% else %}<span class="text-muted">Sin imagen</span>{% endif %}
                                 </div>
                                 <div class="weekly-caption">
                                     <span class="color{{post.categoria.first.id}}">{{post.categoria.first.nombre}}</span>
@@ -146,7 +154,9 @@
                                         <div class="col-lg-6 col-md-6">
                                             <div class="single-what-news mb-100">
                                                 <div class="what-img">
+                                                    {% if post.imagen.url %}
                                                     <img src="{{post.imagen.url}}" alt="{{post.titulo}}">
+                                                    {% else %}<span class="text-muted">Sin imagen</span>{% endif %}
                                                 </div>
                                                 <div class="what-cap">
                                                     <span class="color{{post.categoria.first.id}}">{{post.categoria.first.nombre}}</span> <!--DEUDA TECNICA: cambiar css para que no dependa del tam de la img (set 360x335)-->
@@ -168,7 +178,9 @@
                                         <div class="col-lg-6 col-md-6">
                                             <div class="single-what-news mb-100">
                                                 <div class="what-img">
+                                                    {% if post.imagen.url %}
                                                     <img src="{{post.imagen.url}}" alt="{{post.titulo}}">
+                                                    {% else %}<span class="text-muted">Sin imagen</span>{% endif %}
                                                 </div>
                                                 <div class="what-cap">
                                                     <span class="color{{item.cat.id}}">{{item.cat.nombre}}</span>
@@ -198,38 +210,38 @@
                     <div class="single-box">
                         <div class="follow-us d-flex align-items-center">
                             <div class="follow-social">
-                                <a href="#"><img src="{% static 'assets/img/news/icon-fb.png' %}" alt=""></a>
+                                <a href="https://www.youtube.com/@informatorio-"><img src="{% static 'assets/img/news/yt_logo.png' %}" alt=""></a>
                             </div>
                             <div class="follow-count">  
-                                <span>8,045</span>
-                                <p>Fans</p>
+                                <a href="https://www.youtube.com/@informatorio-"><span>Youtube</span>
+                                <p>@Informatorio</p></a>
                             </div>
                         </div> 
                         <div class="follow-us d-flex align-items-center">
                             <div class="follow-social">
-                                <a href="#"><img src="{% static 'assets/img/news/icon-tw.png' %}" alt=""></a>
+                                <a href="https://x.com/elinformatorio"><img src="{% static 'assets/img/news/x_logo.png' %}" alt=""></a>
                             </div>
                             <div class="follow-count">
-                                <span>8,045</span>
-                                <p>Fans</p>
+                                <a href="https://x.com/elinformatorio"><span>X</span>
+                                <p>@elinformatorio</p></a>
                             </div>
                         </div>
                             <div class="follow-us d-flex align-items-center">
                             <div class="follow-social">
-                                <a href="#"><img src="{% static 'assets/img/news/icon-ins.png' %}" alt=""></a>
+                                <a href="https://www.instagram.com/informatorio/"><img src="{% static 'assets/img/news/ig_logo.png' %}" alt=""></a>
                             </div>
                             <div class="follow-count">
-                                <span>8,045</span>
-                                <p>Fans</p>
+                                <a href="https://www.instagram.com/informatorio/"><span>Instagram</span>
+                                <p>@informatorio</p></a>
                             </div>
                         </div>
                         <div class="follow-us d-flex align-items-center">
                             <div class="follow-social">
-                                <a href="#"><img src="{% static 'assets/img/news/icon-yo.png' %}" alt=""></a>
+                                <a href="https://www.facebook.com/informatorio.chaco"><img src="{% static 'assets/img/news/fb_logo.png' %}" alt=""></a>
                             </div>
                             <div class="follow-count">
-                                <span>8,045</span>
-                                <p>Fans</p>
+                                <a href="https://www.facebook.com/informatorio.chaco"><span>Facebook</span>
+                                <p>@informatorio.chaco</p></a>
                             </div>
                         </div>
                     </div>
@@ -262,7 +274,9 @@
                             {% for post in weekly2_news_posts %}
                             <div class="weekly2-single">
                                 <div class="weekly2-img">
+                                    {% if post.imagen.url %}
                                     <img src="{{ post.imagen.url }}" alt="{{post.titulo}}">
+                                    {% else %}<span class="text-muted">Sin imagen</span>{% endif %}
                                 </div>
                                 <div class="weekly2-caption">
                                     <span class="color{{post.categoria.first.id}}">{{post.categoria.first.nombre}}</span>
@@ -286,7 +300,7 @@
                 <div class="col-12">
                     <div class="video-items-active">
                         {% for vid in videos %}
-                        <div class="video-items text-center" data-titulo="{{ vid.titulo }}" data-descripcion="{{ vid.descripcion }}" data-categoria="{{ vid.categoria.nombre }}" data-categoria-id="{{ vid.categoria.id }}">
+                        <div class="video-items text-center" data-titulo="{{ vid.titulo }}" data-descripcion="{{ vid.descripcion|linebreaks }}" data-categoria="{{ vid.categoria.nombre }}" data-categoria-id="{{ vid.categoria.id }}">
                             <iframe src="{{vid.embed_url}}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                         </div>
                         {% endfor %}
@@ -343,7 +357,10 @@
                             {% for post in recent_articles_posts %}
                             <div class="single-recent mb-100">
                                 <div class="what-img">
+                                    {% if post.imagen.url %}
                                     <img src="{{post.imagen.url}}" alt="{{post.titulo}}">
+                                    {% else %}<span class="text-muted">Sin imagen</span>{% endif %}
+                                    
                                 </div>
                                 <div class="what-cap">
                                     <span class="color{{post.categoria.first.id}}">{{post.categoria.first.nombre}}</span> <!-- DEUDA TECNICA: limitar el tamaño-->

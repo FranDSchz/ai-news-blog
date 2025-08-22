@@ -9,7 +9,7 @@ from django.contrib.auth.models import User
 class Categoria(models.Model):
     nombre = models.CharField(max_length=100, unique=True)
     descripcion = models.TextField(blank=True, null=True, help_text="Una breve descripción de la categoría para SEO y para mostrar en el hub de categorías.")
-    imagen = models.ImageField(upload_to='imagenes_categorias/', null=True, blank=True, help_text="Imagen representativa para la categoría")
+    imagen = models.ImageField(upload_to='imagenes_categorias/', default="imagenes_categorias/categorias_default.png", null=True, blank=True, help_text="Imagen representativa para la categoría")
 
     def __str__(self):
         return self.nombre
@@ -24,7 +24,7 @@ class Post(models.Model):
     titulo = models.CharField(max_length=225)
     contenido = models.TextField()
     categoria = models.ManyToManyField(Categoria, related_name='posts')
-    imagen = models.ImageField(upload_to='imagenes_noticias', blank=True, null=True)
+    imagen = models.ImageField(upload_to='imagenes_noticias', default="imagenes_noticias/noticias_default.png")
     fecha_creacion = models.DateTimeField(auto_now_add=True)
     actualizacion = models.DateTimeField(auto_now=True)
     fecha_publicacion = models.DateTimeField(null=True, blank=True)
@@ -37,15 +37,41 @@ class Post(models.Model):
         self.estado = 'publicado'
         self.fecha_publicacion = timezone.now()
         self.save()
+    def save(self, *args, **kwargs):
+        # Si el post está siendo marcado como 'publicado' y no tiene ya una fecha de publicación...
+        if self.estado == 'publicado' and self.fecha_publicacion is None:
+            # ...le asignamos la fecha y hora actual.
+            self.fecha_publicacion = timezone.now()
+        super().save(*args, **kwargs) # Llamamos al método save original
 
 class Comentario(models.Model):
     usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="comentarios")
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comentarios')
     texto = models.TextField()
     fecha_creacion = models.DateTimeField(auto_now_add=True)
-    
-# Al final de ai_news_config/apps/noticias/models.py
+    editado = models.BooleanField(default=False)
+    fecha_edicion = models.DateTimeField(null=True, blank=True)
+    eliminado = models.BooleanField(default=False)
+    eliminado_por = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='comentarios_eliminados'
+    )
+    def __str__(self):
+        return f"Comentario de {self.usuario.username} en {self.post.titulo}"
 
+    def save(self, *args, **kwargs):
+        # Si el comentario está siendo modificado (ya tiene un pk)
+        if self.pk:
+            # Obtenemos la versión original de la base de datos
+            original = Comentario.objects.get(pk=self.pk)
+            # Si el texto ha cambiado, marcamos como editado
+            if original.texto != self.texto:
+                self.editado = True
+                self.fecha_edicion = timezone.now()
+        super().save(*args, **kwargs)
 class Video(models.Model):
     titulo = models.CharField(max_length=225)
     descripcion = models.TextField()
