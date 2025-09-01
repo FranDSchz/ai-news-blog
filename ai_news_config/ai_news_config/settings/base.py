@@ -11,8 +11,11 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
-
 from pathlib import Path
+import os
+from dotenv import load_dotenv
+load_dotenv()
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'una-clave-secreta-por-defecto-muy-larga-y-dificil')
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 #BASE_DIR = Path(__file__).resolve().parent.parent
@@ -22,7 +25,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-2tbh@ze4bgssyvw-n_wo(mcio9xz&npwno9kwrin%4&ga)2#0b'
 
 AUTH_USER_MODEL = 'usuarios.Usuario'
 

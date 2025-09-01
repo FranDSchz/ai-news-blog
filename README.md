@@ -1,157 +1,77 @@
-# **Proyecto Final: Blog de Noticias sobre IA**
+# AI News Blog 🤖📰
 
-Este repositorio contiene el código fuente para el proyecto final de la cursada: una aplicación web de noticias sobre Inteligencia Artificial desarrollada con Django. El objetivo es crear un blog funcional que permita a distintos tipos de usuarios interactuar con el contenido.
+¡Bienvenido a AI News Blog! Una aplicación web full-stack desarrollada con Django que funciona como un portal de noticias centralizado sobre los últimos avances en Inteligencia Artificial.
 
-## **🚀 Herramientas y Organización**
+Este proyecto fue desarrollado como el trabajo final para el programa "Informatorio Chaco", aplicando los principios del desarrollo backend, la arquitectura MTV y la gestión de bases de datos.
 
-Nuestra gestión del proyecto se centraliza en Trello. Es nuestra **única fuente de verdad** para saber qué hay que hacer, quién lo está haciendo y qué se ha completado.
+### Demo Visual
 
-  * **Enlace al tablero:**  Cada miembro del equipo recibio al mismo mail con el cual se registrarion en el info la invitacion para unirse al tablero.
+`![Demo del Proyecto](URL)` Pendiente
 
-### **¿Cómo usamos Trello?**
+---
 
-El tablero está organizado en un flujo Kanban simple. Todas las tareas nacen en `Backlog` y se mueven hacia la derecha.
+## 🚀 Features Principales
 
-1.  **Elige una tarea de la columna `To Do`**. Las tareas con mayor prioridad estarán más arriba.
-2.  **¡MUY IMPORTANTE\!** Antes de empezar, **lee la descripción completa de la tarjeta y revisa la checklist**. Ahí están los detalles y los requisitos de lo que hay que hacer.
-3.  **Asígnate a la tarjeta** para que todos sepan que estás trabajando en ella.
-4.  **Mueve la tarjeta a la columna `Doing`**. Nadie más debería trabajar en esa tarea.
-5.  Una vez que hayas terminado y probado tu código, **mueve la tarjeta a `Done`**.
+* **Gestión de Contenido (CRUD):** Los administradores y autores pueden crear, editar y eliminar noticias.
+* **Sistema de Usuarios:** Registro, inicio de sesión y perfiles de usuario personalizados.
+* **Comentarios Interactivos:** Los usuarios registrados pueden comentar en las noticias, fomentando la discusión.
+* **Categorización y Búsqueda:** Las noticias están organizadas por categorías y los usuarios pueden usar una barra de búsqueda para encontrar artículos de su interés.
+* **Panel de Administración:** Interfaz de administración para gestionar usuarios, noticias, categorías y comentarios.
 
----------------------------------
+---
 
-## **💻 Flujo de Trabajo con Git y GitHub**
+## 🛠️ Stack Tecnológico
 
-Para evitar conflictos y mantener el código ordenado, seguiremos un flujo de trabajo basado en ramas. **Nadie debe subir cambios directamente a la rama `main`**.
+![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![Django](https://img.shields.io/badge/Django-092E20?style=for-the-badge&logo=django&logoColor=white)
+![SQLite](https://img.shields.io/badge/SQLite-003B57?style=for-the-badge&logo=sqlite&logoColor=white)
+![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
+![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
 
-La idea principal es **integrar los cambios constantemente**. No esperes a tener una funcionalidad gigante terminada para subirla. Haz cambios pequeños y frecuentes.
+---
 
-### **Proceso para trabajar en una nueva tarea:**
+## ⚙️ Instalación y Uso Local
 
-1.  Asegúrate de tener la última versión del proyecto:
-    ```bash
-    git checkout main
-    git pull
-    ```
-2.  Crea una nueva rama para tu tarea. El nombre debe ser descriptivo, usando el formato `feature/nombre-tarea`.
-    ```bash
-    # Ejemplo si tu tarea es crear el modelo de Post
-    git checkout -b feature/modelo-post
-    ```
-3.  Ahora sí, ¡a programar\! Haz todos los cambios que necesites en tu rama.
-4.  Cuando hagas un avance significativo, guarda tus cambios con un commit:
-    ```bash
-    git add .
-    git commit -m "feat: Se crea el modelo Post con sus atributos"
-    ```
-5.  Sube tu rama a GitHub para tener una copia de seguridad y para luego integrarla:
-    ```bash
-    git push origin feature/modelo-post
-    ```
-6.  Cuando la tarea esté terminada, ve a GitHub y abre un **Pull Request (PR)** desde tu rama hacia `main`. Asigna a otro miembro del equipo para que revise tu código. Una vez aprobado, se podrá fusionar con la rama principal.
+Para ejecutar este proyecto en tu propia máquina, sigue estos pasos:
 
------
-
-## **📂 Estructura del Proyecto**
-
-
-```markdown
-/ai_news_config/
-├── apps/               # Contenedor para todas nuestras aplicaciones de Django
-│   ├── noticias/       # App para posts, categorías, comentarios
-│   └── usuarios/       # App para perfiles, registro, login
-├── ai_news_config/     # Carpeta de configuración del proyecto
-│   ├── settings/       # Settings separados por entorno
-│   │   ├── base.py     # Configuración común
-│   │   ├── local.py    # Configuración para desarrollo
-│   │   └── production.py # Configuración para el servidor final
-│   ├── __init__.py
-│   ├── asgi.py
-│   ├── urls.py         # Archivo de URLs principal
-│   └── wsgi.py
-│
-├── media/              # Para archivos subidos por los usuarios (ej: fotos de posts)
-├── static/             # Archivos estáticos (CSS, JS, imágenes del diseño)
-│   ├── css/
-│   ├── img/
-│   └── js/
-│
-├── templates/          # Carpeta ÚNICA para todas las plantillas HTML
-│   ├── noticias/
-│   │   ├── home.html
-│   │   └── post_detail.html
-│   │   └── ...
-│   ├── usuarios/
-│   │   └── login.html
-│   │   └── ...
-│   └── base.html       # La plantilla principal de la que heredan todas las demás
-│
-├── .gitignore
-├── db.sqlite3          # La base de datos
-├── manage.py
-├── README.md
-└── requirements.txt
-```
------
-
-## **🛠️ Cómo Levantar el Proyecto en Local**
-
-Sigue estos pasos para tener el proyecto corriendo en tu computadora:
-
-1.  **Clonar el Repositorio:**
-
+1.  **Clona el repositorio:**
     ```bash
     git clone https://github.com/FranDSchz/ai-news-blog.git
     cd ai-news-blog
     ```
 
-2.  **Crear y Activar el Entorno Virtual:**
-    Un entorno virtual (`env`) aísla las dependencias de nuestro proyecto.
-
+2.  **Crea y activa un entorno virtual:**
     ```bash
-    # Crear el entorno
-    python -m venv .news-venv
-
-    # Activarlo (Windows)
-    .\.news-venv\Scripts\activate
-
-    # Activarlo (macOS/Linux)
-    source .news-venv/bin/activate
+    python -m venv venv
+    # En Windows:
+    venv\Scripts\activate
+    # En macOS/Linux:
+    source venv/bin/activate
     ```
 
-3.  **Instalar Dependencias:**
-    Esto instalará Django y cualquier otra librería que necesitemos.
-
+3.  **Instala las dependencias:**
     ```bash
     pip install -r requirements.txt
     ```
 
-4.  **Aplicar Migraciones:**
-    Esto crea la base de datos (`db.sqlite3`) y las tablas según nuestros modelos.
-    Primero nos aseguramos de estar parados en la carpeta del proyecto `ai_news_config`, si estamos en `ai-news-blog/` entonces:
+4.  **Aplica las migraciones:**
     ```bash
-    cd ai_news_config
-    ```
-    Ahora si podemos aplicar las migraciones.
-    ```bash
-    python manage.py makemigrations
-    ```
-    ```bash
-    python manage.py migrate
+    python ai_news_config/manage.py migrate
     ```
 
-6.  **Crear un Superusuario:**
-    Necesitarás un usuario para acceder al panel de administrador (`/admin`).
-
+5.  **Crea un superusuario para acceder al admin:**
     ```bash
-    python manage.py createsuperuser
+    python ai_news_config/manage.py createsuperuser
     ```
 
-7.  **Levantar el Servidor:**
-    ¡Listo\! Con esto, el proyecto estará corriendo.
-
+6.  **Ejecuta el servidor de desarrollo:**
     ```bash
-    python manage.py runserver
+    python ai_news_config/manage.py runserver
     ```
 
-    Ahora puedes abrir tu navegador y visitar **[http://127.0.0.1:8000/](http://127.0.0.1:8000/)** para ver la aplicación.
+¡Listo! Abre tu navegador y ve a `http://127.0.0.1:8000` para ver la aplicación funcionando.
+
+---
+## 💡 Desafíos y Aprendizajes
+
+Uno de los principales desafíos de este proyecto fue diseñar la estructura de los modelos y las relaciones en la base de datos para que fueran escalables. Implementar el sistema de comentarios anidados y la gestión de perfiles de usuario me permitió profundizar en el ORM de Django y en cómo manejar la lógica de negocio compleja en las vistas.
